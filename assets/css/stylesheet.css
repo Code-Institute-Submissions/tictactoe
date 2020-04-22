@@ -1,0 +1,54 @@
+    /************************************************* Colors */
+    
+    .bg-color-body {
+        background-color: #EBE18C;
+    }
+    
+    .bg-color-title {
+        background-color: #DC3F1C;
+    }
+    
+    .bg-color-button {
+        background-color: #D8A027;
+    }
+    /*************************************************  Colors   End  */
+    
+    .grid-main {
+        display: grid;
+    }
+    
+    h1 {
+        font-size: xx-large;
+        text-transform: uppercase;
+        font-family: 'Tomorrow', sans-serif;
+    }
+    
+    #start-btn {
+        font-family: 'Tomorrow', sans-serif;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+    }
+
+    
+    .title-area {
+        justify-self: center;
+        text-align: center;
+        width: 200px;
+    }
+    
+    #user-instruction {
+        height: fit-content;
+        text-align: center;
+    }
+    .move-area{
+        display: inline-flex;
+        jus
+    }
+    input#space-number {
+        width: 200px;
+        text-align: center;
+        justify-self: center;
+    }
+    #user-move {
+        width: 100px;
+    }
