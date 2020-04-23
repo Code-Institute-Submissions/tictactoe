@@ -1,7 +1,6 @@
 //winning states 8.
 //[][], [][], [][]  columns all same value || rows all same value || (row===col && row+col===2
 function winner(boardState) {
-    i = 0;
     xCount = 0;
     oCount = 0;
     result = '';
@@ -23,10 +22,41 @@ function winner(boardState) {
             }
         }
     }
-    if (xCount<3 && oCount<3) {
-        result = 'No winner';
-        return result;
+
+    if( containsThree(0,xRowCoordinates) || containsThree(1,xRowCoordinates) || containsThree(2,xRowCoordinates) ||
+    containsThree(0,xColCoordinates) || containsThree(1,xColCoordinates) || containsThree(2,xColCoordinates) || containsDiagonalThree(xRowCoordinates,xColCoordinates) ) {
+        result = 'X is winner!';
+    } else if ( containsThree(0,oRowCoordinates) || containsThree(1,oRowCoordinates) || containsThree(2,oRowCoordinates) ||
+    containsThree(0,oColCoordinates) || containsThree(1,oColCoordinates) || containsThree(2,oColCoordinates) || containsDiagonalThree(oRowCoordinates,oColCoordinates) ) {
+        result = 'O is winner!';
+    } else result = 'No winner';
+
+    return result;
+}
+
+function containsThree(element,array){  // determines whether line contains 3 'X's or 'O's, NOT for diagonals!
+    var sameLine=[];
+    var i=array.indexOf(element);
+    while (i!=-1) {
+        sameLine.push(i);
+        i=array.indexOf(element,i+1);
     }
-    console.log("X row coordinates are "+xRowCoordinates+"X col coordinates are "+xColCoordinates+
-            "O row coordinates are "+oRowCoordinates+"O col coordinates are "+oColCoordinates+" .");
+    if(sameLine.length >2) return true;
+    else return false;
+}
+
+function containsDiagonalThree(array1,array2){
+    // top left to bottom right.
+    counter=0;
+    for(i=0;i<array1.length;i++){
+        if(array1[i]===array2[i]) counter++;
+    }
+    if (counter>2) return true;     
+    // top right to bottom left.
+    counter=0;
+    for(i=0;i<array1.length;i++){
+        if(array1[i]+array2[i]===2) counter++;
+    }
+    if (counter>2) return true; 
+    return false;
 }
