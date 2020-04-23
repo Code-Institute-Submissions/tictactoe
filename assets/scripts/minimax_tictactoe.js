@@ -6,14 +6,12 @@
 
 //Assume user goes first
 
-
-var board = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-];
-
 function startGame() {
+    var board = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ];
     displayBoard(board);
     choseWhere(board);
 }
@@ -33,23 +31,29 @@ function resetBoard() {
         [4, 5, 6],
         [7, 8, 9]
     ];
+    return boardArr;
 }
-/*const prompt = require('prompt-sync')({
-    sigint: true
-});*/
 
-function choseWhere() {
+function getMove() {
+    var move = document.getElementById("space-number").value;
+    return move;
+  }
+
+function updateBoard(move,player,board){
+    console.log("You have chosen to place your marker on square number "+move+".");
+  }
+function choseWhere(boardState) {
     // Ask user where they want to place their next move (1-9).
     // return error if !1-9 or if space already taken.
-    // edit board state.
-
-    var userChoice;
+    // call edit board state.
+    var user = 1;
     $("#user-instruction").html("Please pick a space 1 - 9 that hasn 't already been taken.")
-    $("#user-move").click(function() {
-        userChoice = $("#space-number").val();
-        return userChoice;
-    })
-    console.log(userChoice);
-    return userChoice;
-} //winning states 8.
-//[][], [][], [][]  columns all same value || rows all same value || (row===col && row+col===2
+
+    document.getElementById("user-move").addEventListener("click",function(){
+        var move=getMove();
+        updateBoard(move,user,boardState);
+    });
+    //console.log(getMove());
+    
+}
+    
