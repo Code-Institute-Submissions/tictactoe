@@ -122,8 +122,8 @@ function computerChose(player, boardState) {
 
 function containsNumberOf(element,array,number){        // shared with winner.js 
      // determines whether line contains 3 'X's or 'O's, NOT for diagonals!
-    var sameLine=[];
-    var i;
+    let sameLine=[];
+    let i;
     if(array){
         i=array.indexOf(element);
         while (i!=-1) {
@@ -135,25 +135,43 @@ function containsNumberOf(element,array,number){        // shared with winner.js
     else return false;
 }
 
+function copyBoard(boardState){
+let copyBoardState = [[]];
+for(i=0 ; i<boardState.length ; i++){
+    for(j=0 ; j<boardState[i].length ; j++){
+        copyBoardState[i]=boardState[i].slice();
+        }
+    }    
+    return copyBoardState;
+}
+
 function completeLine(board) {
+    console.log('completeLine entered.')
     var coordLineGap = [];  // missing coordinates of marker required to complete line (defensively or offensively)
     //Scan each row/column for two of same character on a line. MUST include space as well!
     for (i=0; i<board.length; i++){
-        if( ( containsNumberOf('X',board[i],2) && hasSpacesRemainingOneD(board[i]) ) || ( containsNumberOf('O',board[i],2) && hasSpacesRemainingOneD(board[i]) ) ){
+        if( containsNumberOf('O',board[i],2) && hasSpacesRemainingOneD(board[i])>-1 ){
             coordLineGap[0]= i;
             coordLineGap[1]=hasSpacesRemainingOneD(board[i]);
-            //console.log('\t\tCOORDINATES on ROW are ' + coordLineGap[0] + ' , ' + coordLineGap[1] + '.')
+            console.log('scanning row '+i+' space found on col '+coordLineGap[1])
+            return coordToMove(coordLineGap);  //winning line --> assuming 'O' is computer marker.
+        } else if( containsNumberOf('X',board[i],2) && hasSpacesRemainingOneD(board[i])>-1 ){
+            coordLineGap[0]= i;
+            coordLineGap[1]=hasSpacesRemainingOneD(board[i]);
         }    
     }
     
-    board=board[0].map( (col, i) => board.map(row => row[i]) );    //        Transpose board to scan columns more easily.
+    board=board[0].map( (row, i) => board.map(row => row[i]) );    //        Transpose board to scan columns more easily.
     
     for (j=0; j<board.length; j++){
-        if( ( containsNumberOf('X',board[j],2) && hasSpacesRemainingOneD(board[j]) ) || ( containsNumberOf('O',board[j],2) && hasSpacesRemainingOneD(board[j]) ) ) {    /***************This Line causing problem!!!! overwriting other marker */
+        if( containsNumberOf('O',board[j],2) && hasSpacesRemainingOneD(board[j])>-1 ) {    /***************This Line causing problem!!!! overwriting other marker */
             coordLineGap[0] = hasSpacesRemainingOneD(board[j]);
             coordLineGap[1] = j;
-            //console.log('COORDINATES on COLUMN are ' + coordLineGap[0] + ' , ' + coordLineGap[1] + '.')
-        }   
+            return coordToMove(coordLineGap);   // winning line
+        }   else if ( containsNumberOf('X',board[j],2) && hasSpacesRemainingOneD(board[j])>-1 ) {
+            coordLineGap[0] = hasSpacesRemainingOneD(board[j]);
+            coordLineGap[1] = j;
+        }
     }
     
     board=board[0].map( (row, j) => board.map(col => col[j]) );  //        Undo earlier board transposition.   
@@ -165,6 +183,7 @@ function completeLine(board) {
 
 
 function maxMove(board){
+    console.log('maxMove entered.')
     // Iterate through boardState array check available spaces and then check which available space has max output on strategyArray.
     let strategyArray = [
         [3, 2, 3],
@@ -200,9 +219,12 @@ function hasSpacesRemainingTwoD(board) {
 }
 function hasSpacesRemainingOneD(array){
     for (let i=0; i<array.length; i++){
-        if (typeof(array[i])=== 'number') return i;
+        if (typeof(array[i])=== 'number') {
+        console.log('element is '+array[i]);
+        return i;
+        }
     }
-    return false;
+    return -1;
 }
 
 function coordToMove(coords){  
@@ -250,23 +272,23 @@ function winner(boardState) {
     } else result = 'No winner';
 
     return result;
-    console.log("X row coordinates are "+xRowCoordinates+"\nX col coordinates are "+xColCoordinates+
-            "\nO row coordinates are "+oRowCoordinates+"\nO col coordinates are "+oColCoordinates+" .");
+    
 }
 
 
-function containsDiagonalThree(array1,array2){
-    // top left to bottom right.
-    counter=0;
-    for(i=0;i<array1.length;i++){
-        if(array1[i]===array2[i]) counter++;
+    function containsDiagonalThree(array1, array2) {
+        // top left to bottom right.
+        counter = 0;
+        for (i = 0; i < array1.length; i++) {
+            if (array1[i] === array2[i]) counter++;
+        }
+        if (counter > 2) return true;
+        // top right to bottom left.
+        counter = 0;
+        for (i = 0; i < array1.length; i++) {
+            if (array1[i] + array2[i] === 2) counter++;
+        }
+        if (counter > 2) return true;
+        return false;
     }
-    if (counter>2) return true;     
-    // top right to bottom left.
-    counter=0;
-    for(i=0;i<array1.length;i++){
-        if(array1[i]+array2[i]===2) counter++;
-    }
-    if (counter>2) return true; 
-    return false;
-}
+
