@@ -1,54 +1,97 @@
-    /************************************************* Colors */
-    
-    .bg-color-body {
-        background-color: #EBE18C;
-    }
-    
-    .bg-color-title {
-        background-color: #DC3F1C;
-    }
-    
-    .bg-color-button {
-        background-color: #D8A027;
-    }
-    /*************************************************  Colors   End  */
-    
-    .grid-main {
-        display: grid;
-    }
-    
-    h1 {
-        font-size: xx-large;
-        text-transform: uppercase;
-        font-family: 'Tomorrow', sans-serif;
-    }
-    
-    #start-btn {
-        font-family: 'Tomorrow', sans-serif;
-        text-transform: uppercase;
-        margin-bottom: 15px;
-    }
+/************************************************* Colors */
 
-    
-    .title-area {
-        justify-self: center;
-        text-align: center;
-        width: 200px;
-    }
-    
-    #user-instruction {
-        height: fit-content;
-        text-align: center;
-    }
-    .move-area{
-        display: inline-flex;
-        jus
-    }
-    input#space-number {
-        width: 200px;
-        text-align: center;
-        justify-self: center;
-    }
-    #user-move {
-        width: 100px;
-    }
+.bg-color-body {
+  background-color: #dc3f1c;
+}
+.head-text-color {
+  color: #ebe18c;
+}
+.bg-color-title {
+  background-color: #dc3f1c;
+}
+
+.bg-color-button {
+  background-color: #d8a027;
+}
+.bg-color-board {
+  background-color: #448d7a;
+}
+.bg-color-boardsquare {
+  background-color: #88a764;
+}
+/*************************************************  Colors   End  */
+
+/*************************************************  User panel  */
+.grid-main {
+  display: grid;
+}
+
+h1 {
+  font-size: xx-large;
+  text-transform: uppercase;
+  font-family: "Tomorrow", sans-serif;
+  padding: 4px;
+}
+
+#start-btn {
+  font-family: "Tomorrow", sans-serif;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  padding: 4px;
+  width: 45%;
+  height: 50px;
+  font-size: 24px;
+}
+
+.title-area {
+  justify-self: center;
+  text-align: center;
+  width: 80%;
+}
+
+#user-instruction {
+  height: fit-content;
+  margin-bottom: 15px;
+  padding: 4px;
+  text-align: center;
+  font-family: "Niramit", sans-serif;
+  font-size: 1em;
+}
+label {
+  width: 80%;
+  justify-self: center;
+  font-family: "Niramit", sans-serif;
+}
+#move-area {
+  display: inline-flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  height: 50px;
+}
+input#space-number {
+  width: 50%;
+  text-align: center;
+  justify-self: center;
+}
+#user-move {
+  width: 30%;
+  font-family: "Niramit", sans-serif;
+  padding: 4px;
+}
+
+/*************************************************  User Panel   End  */
+
+/*************************************************  Board     */
+
+.board {
+  display: grid;
+  grid-template-columns: 85px 85px 85px;
+  grid-gap: 5px;
+  padding: 20px;
+}
+.board-square {
+  height: 85px;
+  background-color: #ebe18c;
+}
+
+/*************************************************  Board   End */
