@@ -5,27 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/stylesheet.css">
-    <link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Niramit:wght@300&family=Tomorrow&display=swap" rel="stylesheet">
     <title>Document</title>
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="assets/scripts/minimax_tictactoe.js"></script>
+    <!-- <script type="module" src="assets/scripts/modules/winner.js"></script> -->
+    <script type="text/javascript" src="assets/scripts/gameFlow.js"></script>
 </head>
 
 <body class="bg-color-body grid-main">
     <div class="title-area">
-        <h1 class="bg-color-title">tic tac toe</h1>
-        <button class="bg-color-button" id="start-btn" onclick="startGame()">start</button>
+        <h1 class="bg-color-title head-text-color">tic tac toe</h1>
+        <button type="button" class="bg-color-button" id="start-btn" onclick="startGame()">start</button>
     </div>
     <div id="user-instruction">
     </div>
     <label for="space-number">Your move:</label>
-    <div class="move-area">
+    <div id="move-area">
         <input type="number" min="1" max="9" id="space-number">
         <button id="user-move">move</button>
     </div>
-
+    <section>
+        <div class="board">
+            <div class="board-square" id="one"></div>
+            <div class="board-square" id="two"></div>
+            <div class="board-square" id="three"></div>
+            <div class="board-square" id="four"></div>
+            <div class="board-square" id="five"></div>
+            <div class="board-square" id="six"></div>
+            <div class="board-square" id="seven"></div>
+            <div class="board-square" id="eight"></div>
+            <div class="board-square" id="nine"></div>
+        </div>
+    </section>
 </body>
 
 </html>
