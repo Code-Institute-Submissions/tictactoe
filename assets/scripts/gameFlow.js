@@ -1,3 +1,5 @@
+//import {winner, containsNumberOf} from 'modules/winner.js';
+
 const defaultBoard = [
         [1, 2, 3],
         [4, 5, 6],
@@ -10,9 +12,30 @@ const defaultBoard = [
 
 
 function startGame() { 
-    var user = true;
-    displayBoard(defaultBoard);
-    choseWhere(user, defaultBoard); // calls updateBoard which returns board.
+    var newBoard=resetBoard();
+    var player = 'user';
+    setTimeout(displayBoard(newBoard),2000);
+    userChose(player, newBoard);
+}
+
+function flowControl(boardState,player){
+    if (winner(boardState)!='No winner') console.log ( winner(boardState) );
+    else if (hasSpacesRemainingTwoD(boardState)) {
+        console.log('flowControl entered!')
+        //continue game --> change players.
+        var nextPlayer= (player==='computer')? 'user':'computer';
+        console.log("Player has now changed from "+player+" to "+nextPlayer+".")
+        if (nextPlayer === 'user') {
+            console.log("User's turn.")
+            $("#user-instruction").html("It's your turn.");
+            userChose(nextPlayer,boardState);
+        } else {
+            console.log("Computer's turn.")
+            $("#user-instruction").html("Computer's turn.");
+            computerChose(nextPlayer,boardState);
+        }      
+    } else // draw 
+    console.log ( "It's a draw!" );  
 }
 
 function displayBoard(boardArr) {
@@ -32,20 +55,21 @@ function resetBoard() {
     return boardArr;
 }
 
-function choseWhere(player, boardState) {
-    // Ask user where they want to place their next move (1-9).
-    // return error if !1-9 or if space already taken.
-    // call edit board state.
-    $("#user-instruction").html("Please pick a space 1 - 9 that hasn 't already been taken.")
 
-    document.getElementById("user-move").addEventListener("click",function(){
-        var move= document.getElementById("space-number").value;;
+function userChose(player, boardState) {
+    // return error if !1-9 or if space already taken.
+    $("#user-instruction").html("Please pick a space 1 - 9 that hasn 't already been taken.")
+    let um = $("#user-move");
+    let umClone = um.clone();  // insert copy of button and remove original to get rid of old Listener events attached to the element.
+    um.remove();
+    umClone.appendTo("#move-area");
+    umClone.click(function(){
+        var move= document.getElementById("space-number").value;
         updateBoard(move,player,boardState);
     });
 }
 
-function updateBoard(move,player,board){
-    console.log("You have chosen to place your marker on square number "+move+"."); 
+function updateBoard(move,player,board){    //shared with gameFlow.js
     var coordinates = [];
     switch(move){
         case('1'): 
@@ -78,23 +102,171 @@ function updateBoard(move,player,board){
         default:
             console.log("No move detected.");
     }
-    console.log(player)
-    if (player ===true) board[coordinates[0]][coordinates[1]]='X';
+    
+     console.log(player + " now moves to square number "+move+".")
+    if (player ==='user') board[coordinates[0]][coordinates[1]]='X';
     else board[coordinates[0]][coordinates[1]]='O';
     // number of moves updated
     displayBoard(board);
-    //check status of board, if (no winner && no spaces left) || winner -> game over else
-    alternatePlayer(player);
-    return board;
+    
+    return flowControl(board,player);
 }
-function isGameOver(board){
-    for (i=0; i<boardState.length;i++){     // row
-        for (j=0; j<boardState[i].length;j++){      // col
+
+function computerChose(player, boardState) {
+    console.log('computerChose entered.')
+    var bestMove = completeLine(boardState);
+    bestMove = bestMove? bestMove:maxMove(boardState); // determines if there's a line to complete or not. Then if not it picks space w/ maximal line oppurtunities.     
+    updateBoard(bestMove,player,boardState);
+    //Each player uses same strategy.        
+}
+
+function containsNumberOf(element,array,number){        // shared with winner.js 
+     // determines whether line contains 3 'X's or 'O's, NOT for diagonals!
+    var sameLine=[];
+    var i;
+    if(array){
+        i=array.indexOf(element);
+        while (i!=-1) {
+            sameLine.push(i);
+            i=array.indexOf(element,i+1);
+        }
+        if(sameLine.length === number) return true;
+    }
+    else return false;
+}
+
+function completeLine(board) {
+    var coordLineGap = [];  // missing coordinates of marker required to complete line (defensively or offensively)
+    //Scan each row/column for two of same character on a line. MUST include space as well!
+    for (i=0; i<board.length; i++){
+        if( ( containsNumberOf('X',board[i],2) && hasSpacesRemainingOneD(board[i]) ) || ( containsNumberOf('O',board[i],2) && hasSpacesRemainingOneD(board[i]) ) ){
+            coordLineGap[0]= i;
+            coordLineGap[1]=hasSpacesRemainingOneD(board[i]);
+            //console.log('\t\tCOORDINATES on ROW are ' + coordLineGap[0] + ' , ' + coordLineGap[1] + '.')
+        }    
+    }
+    
+    board=board[0].map( (col, i) => board.map(row => row[i]) );    //        Transpose board to scan columns more easily.
+    
+    for (j=0; j<board.length; j++){
+        if( ( containsNumberOf('X',board[j],2) && hasSpacesRemainingOneD(board[j]) ) || ( containsNumberOf('O',board[j],2) && hasSpacesRemainingOneD(board[j]) ) ) {    /***************This Line causing problem!!!! overwriting other marker */
+            coordLineGap[0] = hasSpacesRemainingOneD(board[j]);
+            coordLineGap[1] = j;
+            //console.log('COORDINATES on COLUMN are ' + coordLineGap[0] + ' , ' + coordLineGap[1] + '.')
+        }   
+    }
+    
+    board=board[0].map( (row, j) => board.map(col => col[j]) );  //        Undo earlier board transposition.   
+    
+    if (coordLineGap.length<2) return false;
+    else return coordToMove(coordLineGap);   
+    //scan diagonals
+}
+
+
+function maxMove(board){
+    // Iterate through boardState array check available spaces and then check which available space has max output on strategyArray.
+    let strategyArray = [
+        [3, 2, 3],
+        [2, 4, 2],
+        [3, 2, 3]
+    ];
+    var max=0;
+    var move=0;
+    var maxMove=0;
+    for(i=0 ; i<board.length ; i++){
+        for(j=0 ; j<board[i].length ; j++){
+            move++;
+            if (board[i][j]!='X' && board[i][j]!= 'O'){
+                if (strategyArray[i][j]>max){       // determine max strategy space
+                    max = strategyArray[i][j];
+                    maxMove = move; 
+                }
+            }
         }
     }
+    return maxMove.toString()
 }
-function alternatePlayer(currentPlayer){
-    var nextPlayer= !currentPlayer;
-    console.log("Player has now changed from "+currentPlayer+" to "+nextPlayer+".")
-    return nextPlayer;
+
+function hasSpacesRemainingTwoD(board) {
+    for(let i=0 ; i<board.length ; i++){
+        for(j=0 ; j<board[i].length ; j++){
+            if (board[i][j]!='X' && board[i][j]!='O'){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+function hasSpacesRemainingOneD(array){
+    for (let i=0; i<array.length; i++){
+        if (typeof(array[i])=== 'number') return i;
+    }
+    return false;
+}
+
+function coordToMove(coords){  
+    // takes coordinates in [i,j] form and converts them to string [1-9] move on 3X3 board. 
+    var move = 0;   
+    for (i=0; i<3; i++){
+        for (j=0;j<3;j++){
+            move++;
+            if (coords[0]===i && coords[1]===j) return move.toString();
+        }
+    }
+    return move.toString();
+}
+
+function winner(boardState) {
+    i = 0;
+    xCount = 0;
+    oCount = 0;
+    result = '';
+    xRowCoordinates= [];
+    xColCoordinates= [];
+    oRowCoordinates= [];
+    oColCoordinates= [];
+    for (i=0; i<boardState.length;i++){     // row
+        for (j=0; j<boardState[i].length;j++){      // col
+            if (boardState[i][j]==='X'){
+                xCount+=1;
+                xRowCoordinates.push(i);
+                xColCoordinates.push(j);
+            }  
+            else if (boardState[i][j]==='O'){
+                 oCount+=1;
+                 oRowCoordinates.push(i);
+                 oColCoordinates.push(j);
+            }
+        }
+    }
+   
+    if( containsNumberOf(0,xRowCoordinates,3) || containsNumberOf(1,xRowCoordinates,3) || containsNumberOf(2,xRowCoordinates,3) ||
+    containsNumberOf(0,xColCoordinates,3) || containsNumberOf(1,xColCoordinates,3) || containsNumberOf(2,xColCoordinates,3) || containsDiagonalThree(xRowCoordinates,xColCoordinates) ) {
+        result = 'X is winner!';
+    } else if ( containsNumberOf(0,oRowCoordinates,3) || containsNumberOf(1,oRowCoordinates,3) || containsNumberOf(2,oRowCoordinates,3) ||
+    containsNumberOf(0,oColCoordinates,3) || containsNumberOf(1,oColCoordinates,3) || containsNumberOf(2,oColCoordinates,3) || containsDiagonalThree(oRowCoordinates,oColCoordinates) ) {
+        result = 'O is winner!';
+    } else result = 'No winner';
+
+    return result;
+    console.log("X row coordinates are "+xRowCoordinates+"\nX col coordinates are "+xColCoordinates+
+            "\nO row coordinates are "+oRowCoordinates+"\nO col coordinates are "+oColCoordinates+" .");
+}
+
+
+function containsDiagonalThree(array1,array2){
+    // top left to bottom right.
+    counter=0;
+    for(i=0;i<array1.length;i++){
+        if(array1[i]===array2[i]) counter++;
+    }
+    if (counter>2) return true;     
+    // top right to bottom left.
+    counter=0;
+    for(i=0;i<array1.length;i++){
+        if(array1[i]+array2[i]===2) counter++;
+    }
+    if (counter>2) return true; 
+    return false;
 }
