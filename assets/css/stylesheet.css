@@ -90,8 +90,49 @@ input#space-number {
   padding: 20px;
 }
 .board-square {
+  position: relative;
   height: 85px;
   background-color: #ebe18c;
 }
+.mark {
+    position: absolute;
+    transition: all 0.8s ease;
+    transform-style: preserve-3d;
+    height: 100%;
+    width: 100%;
+}
+/*.mark:hover {
+    transform: rotateY(180deg);
+}*/
+.space{
+    position: absolute;
+    width: 100%;
+    height: 100%;  
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+.marker-font {
+    font-family: "Tomorrow" , sans-serif;
+    font-size: 72px;
+    text-align: center;
+}
+.x {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: rotateY(180deg);
+}
+.o{
+    position: absolute;
+    width: 100%;
+    height: 100%;  
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: rotateY(180deg);
+}
+
+
 
 /*************************************************  Board   End */

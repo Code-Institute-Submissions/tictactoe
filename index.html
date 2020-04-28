@@ -1,44 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/stylesheet.css">
-    <link href="https://fonts.googleapis.com/css2?family=Niramit:wght@300&family=Tomorrow&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/stylesheet.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Niramit:wght@300&family=Tomorrow&display=swap"
+      rel="stylesheet"
+    />
     <title>Document</title>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"
+    ></script>
     <!-- <script type="module" src="assets/scripts/modules/winner.js"></script> -->
     <script type="text/javascript" src="assets/scripts/gameFlow.js"></script>
-</head>
+  </head>
 
-<body class="bg-color-body grid-main">
+  <body class="bg-color-body grid-main">
     <div class="title-area">
-        <h1 class="bg-color-title head-text-color">tic tac toe</h1>
-        <button type="button" class="bg-color-button" id="start-btn" onclick="startGame()">start</button>
+      <h1 class="bg-color-title head-text-color">tic tac toe</h1>
+      <button
+        type="button"
+        class="bg-color-button"
+        id="start-btn"
+        onclick="startGame()"
+      >
+        start
+      </button>
     </div>
-    <div id="user-instruction">
-    </div>
+    <div id="user-instruction"></div>
     <label for="space-number">Your move:</label>
     <div id="move-area">
-        <input type="number" min="1" max="9" id="space-number">
-        <button id="user-move">move</button>
+      <input type="number" min="1" max="9" id="space-number" />
+      <button id="user-move">move</button>
     </div>
     <section>
-        <div class="board">
-            <div class="board-square" id="one"></div>
-            <div class="board-square" id="two"></div>
-            <div class="board-square" id="three"></div>
-            <div class="board-square" id="four"></div>
-            <div class="board-square" id="five"></div>
-            <div class="board-square" id="six"></div>
-            <div class="board-square" id="seven"></div>
-            <div class="board-square" id="eight"></div>
-            <div class="board-square" id="nine"></div>
+      <div class="board">
+        <div class="board-square" id="1" onclick="makeUserMark(this)">
+          <div class="mark marker-font">
+            <div class="space"></div>
+            <div class="x">X</div>
+            <!--<div class="o">O</div>-->
+            <!-- computer choice -->
+          </div>
         </div>
+        <div class="board-square" id="2" onclick="makeUserMark(this)">
+          <div class="mark marker-font">
+            <div class="space"></div>
+            <div class="x">X</div>
+            <!--<div class="o">O</div>-->
+            <!-- computer choice -->
+          </div>
+        </div>
+        <div class="board-square" id="3" onclick="makeUserMark(this)">
+          <div class="mark marker-font">
+            <div class="space"></div>
+            <div class="x">X</div>
+            <!--<div class="o">O</div>-->
+            <!-- computer choice -->
+          </div>
+        </div>
+        <div class="board-square" id="4" onclick="makeUserMark(this)">
+          <div class="mark marker-font">
+            <div class="space"></div>
+            <div class="x">X</div>
+            <!--<div class="o">O</div>-->
+            <!-- computer choice -->
+          </div>
+        </div>
+        <div class="board-square" id="5" onclick="makeUserMark(this)">
+          <div class="mark marker-font">
+            <div class="space"></div>
+            <div class="x">X</div>
+            <!--<div class="o">O</div>-->
+            <!-- computer choice -->
+          </div>
+        </div>
+        <div class="board-square" id="6" onclick="makeUserMark(this)">
+          <div class="mark marker-font">
+            <div class="space"></div>
+            <div class="x">X</div>
+            <!--<div class="o">O</div>-->
+            <!-- computer choice -->
+          </div>
+        </div>
+        <div class="board-square" id="7" onclick="makeUserMark(this)">
+          <div class="mark marker-font">
+            <div class="space"></div>
+            <div class="x">X</div>
+            <!--<div class="o">O</div>-->
+            <!-- computer choice -->
+          </div>
+        </div>
+        <div class="board-square" id="8" onclick="makeUserMark(this)">
+          <div class="mark marker-font">
+            <div class="space"></div>
+            <div class="x">X</div>
+            <!--<div class="o">O</div>-->
+            <!-- computer choice -->
+          </div>
+        </div>
+        <div class="board-square" id="9" onclick="makeUserMark(this)">
+          <div class="mark marker-font">
+            <div class="space"></div>
+            <div class="x">X</div>
+            <!--<div class="o">O</div>-->
+            <!-- computer choice -->
+          </div>
+        </div>
+      </div>
     </section>
-</body>
-
+  </body>
 </html>

@@ -1,20 +1,42 @@
 //import {winner, containsNumberOf} from 'modules/winner.js';
 
-const defaultBoard = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
-];
+const board = //{
+   // state:
+        [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+                        ];
+   // moves: 0
+//}
 
 //Assume user goes first
 //objects: user + computer OR 2 instances of player. Stats object
 // user true, computer false. (boolean)
 
 function startGame() {
-  var newBoard = resetBoard();
-  var player = "user";
+    var newBoard = board;
+    //var newBoard = resetBoard();
+    var player = "user";
+    // allow every boardspace to be hovered upon to reveal potential chosen marker.
+    for(id=0;id<=9;id++){
+        $("#"+id).children(".mark").hover( function() {
+            $(this).css("transform", "rotateY(180deg)");
+        }, function(){
+            $(this).css("transform", "rotateY(360deg)");
+        });
+        id=parseInt(id);
+      }
   displayBoard(newBoard);
-  userChose(player, newBoard);
+  //userChose(player, newBoard);
+}
+
+function makeUserMark(currentElement) { // takes id from element which refers to board space.
+    let elementId=currentElement.id;    //string 
+    $(currentElement).find(".space").html('X');
+    $(currentElement).find(".mark").unbind('mouseenter mouseleave');
+    $("#user-instruction").html('Move is '+elementId+'.');
+    updateBoard(elementId,'user',board);    
 }
 
 function flowControl(boardState, player) {
@@ -28,8 +50,8 @@ function flowControl(boardState, player) {
     );
     if (nextPlayer === "user") {
       console.log("User's turn.");
-      $("#user-instruction").html("It's your turn.");
-      userChose(nextPlayer, boardState);
+      $("#user-instruction").html("It's now your turn.");
+      //userChose(nextPlayer, boardState);
     } else {
       console.log("Computer's turn.");
       $("#user-instruction").html("Computer's turn.");
@@ -82,12 +104,15 @@ function userChose(player, boardState) {
   umClone.appendTo("#move-area");
   umClone.click(function () {
     var move = document.getElementById("space-number").value;
-    updateBoard(move, player, boardState);
+    let coords = function() {
+            return moveToCoord(move);
+        } 
+    
+        updateBoard(move, player, boardState);
   });
 }
 
-function updateBoard(move, player, board) {
-  //shared with gameFlow.js
+function updateBoard(move, player, board) {     // move is string
   var coordinates = [];
   switch (move) {
     case "1":
@@ -120,10 +145,11 @@ function updateBoard(move, player, board) {
     default:
       console.log("No move detected.");
   }
-
-  console.log(player + " now moves to square number " + move + ".");
+  
+  //console.log(player + " now moves to square number " + move + ".");
   if (player === "user") board[coordinates[0]][coordinates[1]] = "X";
   else board[coordinates[0]][coordinates[1]] = "O";
+
   // number of moves updated
   displayBoard(board);
 
@@ -296,10 +322,22 @@ function hasSpacesRemainingOneD(array) {
   }
   return -1;
 }
+function moveToCoord(move) {
+    let coords = [];
+    let mv=0;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+        mv++;
+        if (mv === move) coords[0] === i && coords[1] === j;
+    }
+  }
+  return coords;
+}
+
 
 function coordToMove(coords) {
   // takes coordinates in [i,j] form and converts them to string [1-9] move on 3X3 board.
-  var move = 0;
+  let move = 0;
   for (i = 0; i < 3; i++) {
     for (j = 0; j < 3; j++) {
       move++;
