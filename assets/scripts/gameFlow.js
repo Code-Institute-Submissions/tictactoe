@@ -33,10 +33,22 @@ function startGame() {
 
 function makeUserMark(currentElement) { // takes id from element which refers to board space.
     let elementId=currentElement.id;    //string 
+    if ( $(currentElement).find(".space").html()==='X' || $(currentElement).find(".space").html()==='O'){
+        alert("Cannot move here, this space is already occupied!")
+    } else {  
     $(currentElement).find(".space").html('X');
     $(currentElement).find(".mark").unbind('mouseenter mouseleave');
-    $("#user-instruction").html('Move is '+elementId+'.');
+    $("#user-instruction").html('Your move is '+elementId+'.');
     updateBoard(elementId,'user',board);    
+    }
+}
+
+function makeCompMark(move, board) { 
+    // get element by Id 
+    $("#"+move).find(".space").html('O');
+    $("#"+move).find(".mark").unbind('mouseenter mouseleave');
+    $("#user-instruction").html('Computer moved to '+move+'.');
+    updateBoard(move, 'computer', board);    
 }
 
 function flowControl(boardState, player) {
@@ -55,7 +67,7 @@ function flowControl(boardState, player) {
     } else {
       console.log("Computer's turn.");
       $("#user-instruction").html("Computer's turn.");
-      computerChose(nextPlayer, boardState);
+      setTimeout(computerChose(nextPlayer, boardState),3000);
     }
   } // draw
   else console.log("It's a draw!");
@@ -160,8 +172,7 @@ function computerChose(player, boardState) {
   console.log("computerChose entered.");
   var bestMove = completeLine(boardState);
   bestMove = bestMove ? bestMove : maxMove(boardState); // determines if there's a line to complete or not. Then if not it picks space w/ maximal line oppurtunities.
-  updateBoard(bestMove, player, boardState);
-  //Each player uses same strategy.
+  makeCompMark(bestMove, boardState);
 }
 
 function containsNumberOf(element, array, number) {
