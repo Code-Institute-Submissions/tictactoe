@@ -26,13 +26,13 @@ function startGame() {
     
     if ($('#start-btn').text()==='start'){
         for(id=1;id<=9;id++){  
+            $("#"+id).find(".x").html('X');
             $('#'+id).addClass('active');   // allows spaces to be marked.
             $("#"+id).find(".mark").hover( function() { // allow every boardspace to be hovered upon to reveal potential chosen marker.
                 $(this).css("transform", "rotateY(180deg)");
             }, function(){
                 $(this).css("transform", "rotateY(0deg)");
             });
-            //id=parseInt(id);
         }
         //displayBoard(newBoard.state);
         $('#user-instruction').html('The game has started, you can now place your marker.');
@@ -45,15 +45,21 @@ function startGame() {
 function resetBoard(){
     console.log('resetBoard entered .')
     // Make spaces empty & inactive. Remove Hover bindings.
-    
+    $(".board div div div").empty();
     for(id=1;id<=9;id++){
         $("#"+id).find(".mark").unbind('mouseenter mouseleave');
         $("#"+id).removeClass("active");
     }
     displayBoard(board);
-    //board=function(){restartBoard(board);};
-    displayBoard(function(){restartBoard(board);});
-    $(".board div div div").empty();
+    let s= 0;
+    for (i=0; i<board.length; i++){
+        for(j=0; j<board[i].length;j++){
+            s++;
+            board[i][j]=s;
+        }
+    }
+    displayBoard(board);
+    
     $('#start-btn').html('start');
     $('#user-instruction').html('After starting the game, you will be able to make your first move.');
 }
@@ -64,9 +70,9 @@ function makeUserMark(currentElement) { // takes id from element which refers to
         if ( $(currentElement).find(".space").html()==='X' || $(currentElement).find(".space").html()==='O'){
             $("#user-instruction").html("Cannot move here, this space is already occupied!");
         } else {  
-            console.log(elementId+' is of type '+typeof(elementId));
         $(currentElement).find(".space").html('X');
         $(currentElement).find(".mark").unbind('mouseenter mouseleave');
+        $(currentElement).find('.mark').css("transform", "rotateY(720deg)","transition","all 0.2s ease");
         $("#user-instruction").html('Your move is '+elementId+'.');
         updateBoard(elementId,'user',board);    
         }
@@ -84,7 +90,6 @@ function makeCompMark(move, board) {
 function flowControl(boardState, player) {
   if (winner(boardState) != "No winner") console.log(winner(boardState));
   else if (hasSpacesRemainingTwoD(boardState)) {
-    console.log("flowControl entered!");
     //continue game --> change players.
     var nextPlayer = player === "computer" ? "user" : "computer";
     console.log(
@@ -93,9 +98,7 @@ function flowControl(boardState, player) {
     if (nextPlayer === "user") {
       console.log("User's turn.");
       $("#user-instruction").html("It's now your turn.");
-      //userChose(nextPlayer, boardState);
     } else {
-      console.log("Computer's turn.");
       $("#user-instruction").html("Computer's turn.");
       setTimeout(function(){computerChose(nextPlayer, boardState);},2000);
     }
@@ -124,17 +127,6 @@ function displayBoard(boardArr) {
       boardArr[2][2]
   );
   return boardArr;
-}
-
-function restartBoard(boardState) {
-    let s= 0;
-    for (i=0; i<board.length; i++){
-        for(j=0; j<board[i].length;j++){
-            s++;
-            board[i][j]=s;
-        }
-    }
-    return boardState;
 }
 
 function updateBoard(move, player, board) {     // move is string
@@ -182,7 +174,6 @@ function updateBoard(move, player, board) {     // move is string
 }
 
 function computerChose(player, boardState) {
-  console.log("computerChose entered.");
   var bestMove = completeLine(boardState);
   bestMove = bestMove ? bestMove : maxMove(boardState); // determines if there's a line to complete or not. Then if not it picks space w/ maximal line oppurtunities.
   makeCompMark(bestMove, boardState);
@@ -214,7 +205,6 @@ function copyBoard(boardState) {
 }
 
 function completeLine(board) {
-  console.log("completeLine entered.");
   var coordLineGap = []; // missing coordinates of marker required to complete line (defensively or offensively)
   //Scan each row/column for two of same character on a line. MUST include space as well!
   for (i = 0; i < board.length; i++) {
@@ -224,9 +214,6 @@ function completeLine(board) {
     ) {
       coordLineGap[0] = i;
       coordLineGap[1] = hasSpacesRemainingOneD(board[i]);
-      console.log(
-        "scanning row " + i + " space found on col " + coordLineGap[1]
-      );
       return coordToMove(coordLineGap); //winning line --> assuming 'O' is computer marker.
     } else if (
       containsNumberOf("X", board[i], 2) &&
@@ -302,7 +289,6 @@ function completeLine(board) {
 }
 
 function maxMove(board) {
-  console.log("maxMove entered.");
   // Iterate through boardState array check available spaces and then check which available space has max output on strategyArray.
   let strategyArray = [
     [3, 2, 3],
@@ -340,7 +326,6 @@ function hasSpacesRemainingTwoD(board) {
 function hasSpacesRemainingOneD(array) {
   for (let i = 0; i < array.length; i++) {
     if (typeof array[i] === "number") {
-      console.log("element is " + array[i]);
       return i;
     }
   }
