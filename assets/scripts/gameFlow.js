@@ -1,45 +1,75 @@
 //import {winner, containsNumberOf} from 'modules/winner.js';
+const board = [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+            ];
+/*class Board {
+    constructor(state) {
+        this.state =
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+            ];
+    }
+}
+const board = defaultBoard.state; */
 
-const board = //{
-   // state:
-        [
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9],
-                        ];
-   // moves: 0
-//}
 
 //Assume user goes first
 //objects: user + computer OR 2 instances of player. Stats object
 // user true, computer false. (boolean)
 
 function startGame() {
-    var newBoard = board;
-    //var newBoard = resetBoard();
-    var player = "user";
-    // allow every boardspace to be hovered upon to reveal potential chosen marker.
-    for(id=0;id<=9;id++){
-        $("#"+id).children(".mark").hover( function() {
-            $(this).css("transform", "rotateY(180deg)");
-        }, function(){
-            $(this).css("transform", "rotateY(360deg)");
-        });
-        id=parseInt(id);
-      }
-  displayBoard(newBoard);
-  //userChose(player, newBoard);
+    displayBoard(board);
+    
+    if ($('#start-btn').text()==='start'){
+        for(id=1;id<=9;id++){  
+            $('#'+id).addClass('active');   // allows spaces to be marked.
+            $("#"+id).find(".mark").hover( function() { // allow every boardspace to be hovered upon to reveal potential chosen marker.
+                $(this).css("transform", "rotateY(180deg)");
+            }, function(){
+                $(this).css("transform", "rotateY(0deg)");
+            });
+            //id=parseInt(id);
+        }
+        //displayBoard(newBoard.state);
+        $('#user-instruction').html('The game has started, you can now place your marker.');
+        // change to reset button
+        $('#start-btn').html('reset');
+    } else {
+        resetBoard();
+    } 
+}
+function resetBoard(){
+    console.log('resetBoard entered .')
+    // Make spaces empty & inactive. Remove Hover bindings.
+    
+    for(id=1;id<=9;id++){
+        $("#"+id).find(".mark").unbind('mouseenter mouseleave');
+        $("#"+id).removeClass("active");
+    }
+    displayBoard(board);
+    //board=function(){restartBoard(board);};
+    displayBoard(function(){restartBoard(board);});
+    $(".board div div div").empty();
+    $('#start-btn').html('start');
+    $('#user-instruction').html('After starting the game, you will be able to make your first move.');
 }
 
 function makeUserMark(currentElement) { // takes id from element which refers to board space.
     let elementId=currentElement.id;    //string 
-    if ( $(currentElement).find(".space").html()==='X' || $(currentElement).find(".space").html()==='O'){
-        alert("Cannot move here, this space is already occupied!")
-    } else {  
-    $(currentElement).find(".space").html('X');
-    $(currentElement).find(".mark").unbind('mouseenter mouseleave');
-    $("#user-instruction").html('Your move is '+elementId+'.');
-    updateBoard(elementId,'user',board);    
+    if ( $(currentElement).hasClass('active') ) {
+        if ( $(currentElement).find(".space").html()==='X' || $(currentElement).find(".space").html()==='O'){
+            $("#user-instruction").html("Cannot move here, this space is already occupied!");
+        } else {  
+            console.log(elementId+' is of type '+typeof(elementId));
+        $(currentElement).find(".space").html('X');
+        $(currentElement).find(".mark").unbind('mouseenter mouseleave');
+        $("#user-instruction").html('Your move is '+elementId+'.');
+        updateBoard(elementId,'user',board);    
+        }
     }
 }
 
@@ -67,7 +97,7 @@ function flowControl(boardState, player) {
     } else {
       console.log("Computer's turn.");
       $("#user-instruction").html("Computer's turn.");
-      setTimeout(computerChose(nextPlayer, boardState),3000);
+      setTimeout(function(){computerChose(nextPlayer, boardState);},2000);
     }
   } // draw
   else console.log("It's a draw!");
@@ -96,32 +126,15 @@ function displayBoard(boardArr) {
   return boardArr;
 }
 
-function resetBoard() {
-  let boardArr = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-  ];
-  return boardArr;
-}
-
-function userChose(player, boardState) {
-  // return error if !1-9 or if space already taken.
-  $("#user-instruction").html(
-    "Please pick a space 1 - 9 that hasn 't already been taken."
-  );
-  let um = $("#user-move");
-  let umClone = um.clone(); // insert copy of button and remove original to get rid of old Listener events attached to the element.
-  um.remove();
-  umClone.appendTo("#move-area");
-  umClone.click(function () {
-    var move = document.getElementById("space-number").value;
-    let coords = function() {
-            return moveToCoord(move);
-        } 
-    
-        updateBoard(move, player, boardState);
-  });
+function restartBoard(boardState) {
+    let s= 0;
+    for (i=0; i<board.length; i++){
+        for(j=0; j<board[i].length;j++){
+            s++;
+            board[i][j]=s;
+        }
+    }
+    return boardState;
 }
 
 function updateBoard(move, player, board) {     // move is string
