@@ -66,12 +66,13 @@ function resetBoard(){
 
 function makeUserMark(currentElement) { // takes id from element which refers to board space.
     let elementId=currentElement.id;    //string 
-    if ( $(currentElement).hasClass('active') ) {
+    if ( $(currentElement).hasClass('active') && $('#user-instruction').html() != "Computer's turn.") {
         if ( $(currentElement).find(".space").html()==='X' || $(currentElement).find(".space").html()==='O'){
             $("#user-instruction").html("Cannot move here, this space is already occupied!");
         } else {  
         $(currentElement).find(".space").html('X');
-        $(currentElement).find(".mark").unbind('mouseenter mouseleave');
+        $(".board").find(".mark").unbind('mouseenter mouseleave');  // turns off hover function for all spaces whilst comp moves.
+        //$(currentElement).find(".mark").unbind('mouseenter mouseleave');
         $(currentElement).find('.mark').css("transform", "rotateY(720deg)","transition","all 0.2s ease");
         $("#user-instruction").html('Your move is '+elementId+'.');
         updateBoard(elementId,'user',board);    
@@ -82,7 +83,16 @@ function makeUserMark(currentElement) { // takes id from element which refers to
 function makeCompMark(move, board) { 
     // get element by Id 
     $("#"+move).find(".space").html('O');
-    $("#"+move).find(".mark").unbind('mouseenter mouseleave');
+    for(id=1;id<=9;id++){ 
+        if ( $("#"+id).find('.space').html()=== '') {
+        $("#"+id).find(".mark").hover( function() {     // After mark is made, hover turns back on for empty spaces.
+                    $(this).css("transform", "rotateY(180deg)");
+                }, function(){
+                    $(this).css("transform", "rotateY(0deg)");
+                });
+            }
+        }
+    $("#"+move).find(".mark").unbind('mouseenter mouseleave');  // except for where the mark is made.
     $("#user-instruction").html('Computer moved to '+move+'.');
     updateBoard(move, 'computer', board);    
 }
