@@ -1,30 +1,33 @@
-//import {winner, containsNumberOf} from 'modules/winner.js';
+
 const board = [
                 [1, 2, 3],
                 [4, 5, 6],
                 [7, 8, 9],
             ];
-/*class Board {
-    constructor(state) {
-        this.state =
-            [
-                [1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9],
-            ];
-    }
-}
-const board = defaultBoard.state; */
+
 
 
 //Assume user goes first
 //objects: user + computer OR 2 instances of player. Stats object
 // user true, computer false. (boolean)
+async function modalControl(currentElement){
+    if ($(currentElement).hasClass('close')){
+        console.log('close click registered.')
+     $("#gameover-msg").css("display","none");
+    
+    }
+    else if(currentElement.id==='play-again') {
+        await resetBoard();
+        $("#gameover-msg").css("display","none");
+        startGame();
+    } 
+    
+}
 
 function startGame() {
     displayBoard(board);
-    
-    if ($('#start-btn').text()==='start'){
+    console.log($('#start-btn').html()==='start')
+    if ($('#start-btn').html()==='start'){
         for(id=1;id<=9;id++){  
             $("#"+id).find(".x").html('X');
             $('#'+id).addClass('active');   // allows spaces to be marked.
@@ -34,7 +37,6 @@ function startGame() {
                 $(this).css("transform", "rotateY(0deg)");
             });
         }
-        //displayBoard(newBoard.state);
         $('#user-instruction').html('The game has started, you can now place your marker.');
         // change to reset button
         $('#start-btn').html('reset');
@@ -98,7 +100,15 @@ function makeCompMark(move, board) {
 }
 
 function flowControl(boardState, player) {
-  if (winner(boardState) != "No winner") console.log(winner(boardState));
+  if ( winner(boardState) != "No winner"){
+       if ( winner(boardState)==="X is winner!" ){
+        $("#gameover-msg").find(".modal-body").html("Congratulations, you win.");
+        $("#gameover-msg").css("display","block");
+       } else {
+            $("#gameover-msg").find(".modal-body").html("Sorry, you lose.");
+            $("#gameover-msg").css("display","block");
+        }
+  }
   else if (hasSpacesRemainingTwoD(boardState)) {
     //continue game --> change players.
     var nextPlayer = player === "computer" ? "user" : "computer";
@@ -113,7 +123,11 @@ function flowControl(boardState, player) {
       setTimeout(function(){computerChose(nextPlayer, boardState);},2000);
     }
   } // draw
-  else console.log("It's a draw!");
+  else {
+      console.log("It's a draw!");
+      $("#gameover-msg").find(".modal-body").html("It's a draw.");
+      $("#gameover-msg").css("display","block");
+  }
 }
 
 function displayBoard(boardArr) {
