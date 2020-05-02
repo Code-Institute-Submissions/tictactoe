@@ -22,8 +22,9 @@
 /*************************************************  Colors   End  */
 
 /*************************************************  User panel  */
-.grid-main {
+.main-panel {
   display: grid;
+  height: 30%;
 }
 
 h1 {
@@ -38,7 +39,7 @@ h1 {
   text-transform: uppercase;
   margin-bottom: 15px;
   padding: 4px;
-  width: 45%;
+  width: 150px;
   height: 50px;
   font-size: 24px;
 }
@@ -57,34 +58,28 @@ h1 {
   font-family: "Niramit", sans-serif;
   font-size: 1em;
 }
-label {
-  width: 80%;
-  justify-self: center;
-  font-family: "Niramit", sans-serif;
+@media screen and (min-width: 576px){
+    h1{
+        font-size: 48px;
+    }
 }
-#move-area {
-  display: inline-flex;
-  justify-content: center;
-  margin-bottom: 15px;
-  height: 50px;
+@media screen and (min-width: 992px){
+    h1{
+        font-size: 64px;
+    }
 }
-input#space-number {
-  width: 50%;
-  text-align: center;
-  justify-self: center;
-}
-#user-move {
-  width: 30%;
-  font-family: "Niramit", sans-serif;
-  padding: 4px;
-}
-
 /*************************************************  User Panel   End  */
 
 /*************************************************  Board     */
-
+.board-area{
+    height: 350px;
+    display: flex;
+    align-items: center;
+}
 .board {
   display: grid;
+  width: 265px;
+  margin: auto auto;
   grid-template-columns: 85px 85px 85px;
   grid-gap: 5px;
   padding: 20px;
@@ -101,13 +96,12 @@ input#space-number {
     height: 100%;
     width: 100%;
 }
-/*.mark:hover {
-    transform: rotateY(180deg);
-}*/
+
 .space{
     position: absolute;
     width: 100%;
     height: 100%;  
+    /*background-color: #ebe18c;*/
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
 }
@@ -115,11 +109,14 @@ input#space-number {
     font-family: "Tomorrow" , sans-serif;
     font-size: 72px;
     text-align: center;
+    align-items: center;
 }
+
 .x {
     position: absolute;
     width: 100%;
     height: 100%;
+    /*background-color: #88a764;*/
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     transform: rotateY(180deg);
@@ -133,6 +130,119 @@ input#space-number {
     transform: rotateY(180deg);
 }
 
+@media screen and (min-width: 576px){
+    .board-area{
+        height: 700px;
+    }
+    .board {
+        width: 406px;
+        grid-template-columns: 130px 130px 130px;
+        grid-gap: 8px;
+    }
+    .board-square {
+        height: 130px;
+    }
+    .marker-font {
+        font-size: 108px;
+    }
+}
 
+@media screen and (min-width: 992px){
+    .board {
+        width: 560px;
+        grid-template-columns: 180px 180px 180px;
+        grid-gap: 10px;
+    }
+    .board-square {
+        height: 180px;
+    }
+    .marker-font {
+       font-size: 145px;
+    }
+}
 
 /*************************************************  Board   End */
+
+/*************************************************  Modal */
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-container{
+    position: absolute;
+    width: 90%;
+    height: 120px;
+    padding: 12px ;
+    border: 1px solid #888;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #d8a027;
+    font-size: 18px !important;
+}
+
+.modal-header, .modal-footer {
+    display: inline-flex;
+    width: 100%;
+    height: 25%;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "Tomorrow"  , sans-serif;
+}
+.modal-footer {
+    justify-content: space-around;
+}
+.modal-btn{
+    width: 105px;
+    background-color: #ebe18c;
+    font-family: "Niramit",sans-serif;
+    font-size: 18px;
+    padding: 2px 8px;
+}
+.close {
+    font-size: 24px;
+    color: #000;
+    font-family: "Tomorrow" , sans-serif;
+}
+.close:hover,
+.close:focus,
+#play-again:hover,
+#quit:hover {
+  color: #dc3f1c;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal-body{
+    height: 45%;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    font-family: "Niramit" , sans-serif;
+}
+
+
+@media screen and (min-width: 576px){
+    .modal-container{
+        width: 50%;
+        height: 175px;
+        font-size: 21px !important;
+    }
+}
+@media screen and (min-width: 992px){
+    .modal-container{
+        width: 30%;
+        height: 200px;
+        font-size: 24px !important;
+    }
+}
+
+/*************************************************  Modal   End */
