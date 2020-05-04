@@ -10,14 +10,14 @@ const board = [
 //Assume user goes first
 //objects: user + computer OR 2 instances of player. Stats object
 // user true, computer false. (boolean)
-async function modalControl(currentElement){
+function modalControl(currentElement){
     if ($(currentElement).hasClass('close')){
         console.log('close click registered.')
      $("#gameover-msg").css("display","none");
     
     }
     else if(currentElement.id==='play-again') {
-        await resetBoard();
+        resetBoard();
         $("#gameover-msg").css("display","none");
         startGame();
     } 
@@ -29,9 +29,8 @@ function startGame() {
     console.log($('#start-btn').html()==='start')
     if ($('#start-btn').html()==='start'){
         for(id=1;id<=9;id++){  
-            $("#"+id).find(".x").html('X');
             $('#'+id).addClass('active');   // allows spaces to be marked.
-            $("#"+id).find(".mark").hover( function() { // allow every boardspace to be hovered upon to reveal potential chosen marker.
+            $("#mark"+id).hover( function() { // allow every boardspace to be hovered upon to reveal potential chosen marker.
                 $(this).css("transform", "rotateY(180deg)");
             }, function(){
                 $(this).css("transform", "rotateY(0deg)");
@@ -49,7 +48,7 @@ function resetBoard(){
     // Make spaces empty & inactive. Remove Hover bindings.
     $(".board div div div").empty();
     for(id=1;id<=9;id++){
-        $("#"+id).find(".mark").unbind('mouseenter mouseleave');
+        $("#mark"+id).unbind('mouseenter mouseleave');
         $("#"+id).removeClass("active");
     }
     displayBoard(board);
@@ -83,28 +82,31 @@ function makeUserMark(currentElement) { // takes id from element which refers to
 }
 
 function makeCompMark(move, board) { 
-    // get element by Id 
-    $("#"+move).find(".space").html('O');
+    // Make mark first
+    $("#space"+move).html('O');
     for(id=1;id<=9;id++){ 
-        if ( $("#"+id).find('.space').html()=== '') {
-        $("#"+id).find(".mark").hover( function() {     // After mark is made, hover turns back on for empty spaces.
+        if ( $("#space"+id).html()=== '') {
+        // After mark is made, hover turns back on for empty spaces.
+        $("#mark"+id).hover( function() {     
                     $(this).css("transform", "rotateY(180deg)");
                 }, function(){
                     $(this).css("transform", "rotateY(0deg)");
                 });
             }
         }
-    $("#"+move).find(".mark").unbind('mouseenter mouseleave');  // except for where the mark is made.
-    $("#user-instruction").html('Computer moved to '+move+'.');
+    // except for where the mark is made.
+    $("#mark"+move).unbind('mouseenter mouseleave');  
+    //update board array for computer's next move.
     updateBoard(move, 'computer', board);    
 }
 
 function flowControl(boardState, player) {
-  if ( winner(boardState) != "No winner"){
-       if ( winner(boardState)==="X is winner!" ){
-        $("#gameover-msg").find(".modal-body").html("Congratulations, you win.");
-        $("#gameover-msg").css("display","block");
-       } else {
+    // determines winner message if winning state has been reached. 
+    if ( winner(boardState) != "No winner"){
+        if ( winner(boardState)==="X is winner!" ){
+            $("#gameover-msg").find(".modal-body").html("Congratulations, you win.");
+            $("#gameover-msg").css("display","block");
+        } else {
             $("#gameover-msg").find(".modal-body").html("Sorry, you lose.");
             $("#gameover-msg").css("display","block");
         }
@@ -112,11 +114,9 @@ function flowControl(boardState, player) {
   else if (hasSpacesRemainingTwoD(boardState)) {
     //continue game --> change players.
     var nextPlayer = player === "computer" ? "user" : "computer";
-    console.log(
-      "Player has now changed from " + player + " to " + nextPlayer + "."
-    );
     if (nextPlayer === "user") {
-      console.log("User's turn.");
+      // notifies user to click on another board space. 
+      //This will invoke makeUserMark function and continue the gameFlow cycle.
       $("#user-instruction").html("It's now your turn.");
     } else {
       $("#user-instruction").html("Computer's turn.");
@@ -154,58 +154,53 @@ function displayBoard(boardArr) {
 }
 
 function updateBoard(move, player, board) {     // move is string
-  var coordinates = [];
-  switch (move) {
-    case "1":
-      coordinates = [0, 0]; // coordinates of where the marker goes to be decided if 'O' or 'X'.
-      break;
-    case "2":
-      coordinates = [0, 1];
-      break;
-    case "3":
-      coordinates = [0, 2];
-      break;
-    case "4":
-      coordinates = [1, 0];
-      break;
-    case "5":
-      coordinates = [1, 1];
-      break;
-    case "6":
-      coordinates = [1, 2];
-      break;
-    case "7":
-      coordinates = [2, 0];
-      break;
-    case "8":
-      coordinates = [2, 1];
-      break;
-    case "9":
-      coordinates = [2, 2];
-      break;
-    default:
-      console.log("No move detected.");
-  }
-  
-  //console.log(player + " now moves to square number " + move + ".");
-  if (player === "user") board[coordinates[0]][coordinates[1]] = "X";
-  else board[coordinates[0]][coordinates[1]] = "O";
-
-  // number of moves updated
-  displayBoard(board);
-
-  return flowControl(board, player);
+    // coordinates of where the marker goes to be decided if 'O' or 'X'.
+    var coordinates = [];
+    switch (move) {
+        case "1":
+        coordinates = [0, 0]; 
+        break;
+        case "2":
+        coordinates = [0, 1];
+        break;
+        case "3":
+        coordinates = [0, 2];
+        break;
+        case "4":
+        coordinates = [1, 0];
+        break;
+        case "5":
+        coordinates = [1, 1];
+        break;
+        case "6":
+        coordinates = [1, 2];
+        break;
+        case "7":
+        coordinates = [2, 0];
+        break;
+        case "8":
+        coordinates = [2, 1];
+        break;
+        case "9":
+        coordinates = [2, 2];
+        break;
+    }
+    if (player === "user") board[coordinates[0]][coordinates[1]] = "X";
+    else board[coordinates[0]][coordinates[1]] = "O";
+    displayBoard(board);
+    return flowControl(board, player);
 }
 
 function computerChose(player, boardState) {
   var bestMove = completeLine(boardState);
-  bestMove = bestMove ? bestMove : maxMove(boardState); // determines if there's a line to complete or not. Then if not it picks space w/ maximal line oppurtunities.
+  // determines if there's a line to complete or not. Then if not it picks space w/ maximal line opportunities.
+  bestMove = bestMove ? bestMove : maxMove(boardState); 
+  // this move is then marked on board.
   makeCompMark(bestMove, boardState);
 }
 
 function containsNumberOf(element, array, number) {
-  // shared with winner.js
-  // determines whether line contains 3 'X's or 'O's, NOT for diagonals!
+  // determines whether line contains 3 'X's or 'O's, NOT for diagonals.
   let sameLine = [];
   let i;
   if (array) {
@@ -229,87 +224,91 @@ function copyBoard(boardState) {
 }
 
 function completeLine(board) {
-  var coordLineGap = []; // missing coordinates of marker required to complete line (defensively or offensively)
-  //Scan each row/column for two of same character on a line. MUST include space as well!
-  for (i = 0; i < board.length; i++) {
-    if (
-      containsNumberOf("O", board[i], 2) &&
-      hasSpacesRemainingOneD(board[i]) > -1
-    ) {
-      coordLineGap[0] = i;
-      coordLineGap[1] = hasSpacesRemainingOneD(board[i]);
-      return coordToMove(coordLineGap); //winning line --> assuming 'O' is computer marker.
-    } else if (
-      containsNumberOf("X", board[i], 2) &&
-      hasSpacesRemainingOneD(board[i]) > -1
-    ) {
-      coordLineGap[0] = i;
-      coordLineGap[1] = hasSpacesRemainingOneD(board[i]);
+    // missing coordinates of marker required to complete line (defensively or offensively)
+    var coordLineGap = []; 
+    //Scan each row and column for two of same character on a line. MUST include space as well!
+    for (i = 0; i < board.length; i++) {
+        if (
+        containsNumberOf("O", board[i], 2) &&
+        hasSpacesRemainingOneD(board[i]) > -1
+        ) {
+        coordLineGap[0] = i;
+        coordLineGap[1] = hasSpacesRemainingOneD(board[i]);
+        return coordToMove(coordLineGap); //winning line --> assuming 'O' is computer marker.
+        } else if (
+        containsNumberOf("X", board[i], 2) &&
+        hasSpacesRemainingOneD(board[i]) > -1
+        ) {
+        coordLineGap[0] = i;
+        coordLineGap[1] = hasSpacesRemainingOneD(board[i]);
+        }
     }
-  }
 
-  board = board[0].map((row, i) => board.map((row) => row[i])); //        Transpose board to scan columns more easily.
+    board = board[0].map((row, i) => board.map((row) => row[i])); //        Transpose board to scan columns more easily.
 
-  for (j = 0; j < board.length; j++) {
-    if (
-      containsNumberOf("O", board[j], 2) &&
-      hasSpacesRemainingOneD(board[j]) > -1
-    ) {
-      coordLineGap[0] = hasSpacesRemainingOneD(board[j]);
-      coordLineGap[1] = j;
-      return coordToMove(coordLineGap); // winning line
-    } else if (
-      containsNumberOf("X", board[j], 2) &&
-      hasSpacesRemainingOneD(board[j]) > -1
-    ) {
-      coordLineGap[0] = hasSpacesRemainingOneD(board[j]);
-      coordLineGap[1] = j;
+    for (j = 0; j < board.length; j++) {
+        if (
+            containsNumberOf("O", board[j], 2) &&
+            hasSpacesRemainingOneD(board[j]) > -1
+        ) {
+            coordLineGap[0] = hasSpacesRemainingOneD(board[j]);
+            coordLineGap[1] = j;
+            return coordToMove(coordLineGap); // winning line
+        } else if (
+            containsNumberOf("X", board[j], 2) &&
+            hasSpacesRemainingOneD(board[j]) > -1
+        ) {
+            coordLineGap[0] = hasSpacesRemainingOneD(board[j]);
+            coordLineGap[1] = j;
+        }
     }
-  }
+    //  Undo earlier board transposition.
+    board = board[0].map((row, j) => board.map((col) => col[j])); 
 
-  board = board[0].map((row, j) => board.map((col) => col[j])); //        Undo earlier board transposition.
-
-  //scan diagonals
-  let xCounter = 0;
-  let oCounter = 0;
-  let spaceCounter = 0;
-  let m = 0;
-  let n = 0;
-  for (k = 0; k < board.length; k++) {
-    if (board[k][k] === "O") oCounter++;
-    if (board[k][k] === "X") xCounter++;
-    if (typeof board[k][k] === "number") {
-      spaceCounter++;
-      m = k;
-      n = k;
+    //scan diagonals
+    let xCounter = 0;
+    let oCounter = 0;
+    let spaceCounter = 0;
+    let m = 0;
+    let n = 0;
+    for (k = 0; k < board.length; k++) {
+        if (board[k][k] === "O") oCounter++;
+        if (board[k][k] === "X") xCounter++;
+        if (typeof board[k][k] === "number") {
+        spaceCounter++;
+        m = k;
+        n = k;
+        }
     }
-  }
-  if (spaceCounter === 1 && (oCounter === 2 || xCounter === 2)) {
-    coordLineGap[0] = m;
-    coordLineGap[1] = n;
-  }
-  xCounter = 0;
-  oCounter = 0;
-  spaceCounter = 0;
-
-  for (i = 0; i < board.length; i++) {
-    let j = 2 - i;
-    if (board[i][j] === "O") oCounter++;
-    if (board[i][j] === "X") xCounter++;
-    if (typeof board[i][j] === "number") {
-      spaceCounter++;
-      m = i;
-      n = j;
+    // Again searching for line containing 2 of same mark AND a space.
+    if (spaceCounter === 1 && (oCounter === 2 || xCounter === 2)) {
+        coordLineGap[0] = m;
+        coordLineGap[1] = n;
     }
-  }
+    xCounter = 0;
+    oCounter = 0;
+    spaceCounter = 0;
 
-  if (spaceCounter === 1 && (oCounter === 2 || xCounter === 2)) {
-    coordLineGap[0] = m;
-    coordLineGap[1] = n;
-  }
+    for (i = 0; i < board.length; i++) {
+        let j = 2 - i;
+        if (board[i][j] === "O") oCounter++;
+        if (board[i][j] === "X") xCounter++;
+        if (typeof board[i][j] === "number") {
+        spaceCounter++;
+        m = i;
+        n = j;
+        }
+    }
 
-  if (coordLineGap.length < 2) return false;
-  else return coordToMove(coordLineGap);
+    if (spaceCounter === 1 && (oCounter === 2 || xCounter === 2)) {
+        coordLineGap[0] = m;
+        coordLineGap[1] = n;
+    }
+    // If no conditions above are met then the empty coordinates array wouldn't have been filled. 
+    // Therefore there is no line to be completed, yielding a false result.
+    if (coordLineGap.length < 2) return false;
+    // Line has been found with a space.
+    else return coordToMove(coordLineGap);
 }
 
 function maxMove(board) {
