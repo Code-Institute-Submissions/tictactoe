@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
         <link href="https://fonts.googleapis.com/css2?family=Niramit:wght@300&family=Tomorrow&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/stylesheet.css" />
     <title>Tic Tac Toe</title>
@@ -11,115 +13,133 @@
       src="https://code.jquery.com/jquery-3.4.1.js"
       integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
       crossorigin="anonymous"></script>
-    <script type="text/javascript" src="assets/scripts/gameFlow.js"></script>
+    <script type="text/javascript" src="assets/scripts/menu.js"></script>
   </head>
 
   <body class="bg-color-body">
 
-	<div class="modal" id="gameover-msg" aria-hidden="true">
-        <div class="modal-container"> 
-            <div class="modal-header">
-                <h3 class="modal-title">Game Over</h3>
-                <span class="close" onclick="modalControl(this)">
-                    &times;
-                </span>
-            </div>
-            <div class="modal-body">
-                Congratulations, you won!
-            </div>
-            <div class="modal-footer">
-                <button href="menu.html" type="button" class="modal-btn" id="quit">
-                    Quit
-                </button>
-                <button type="button" class="modal-btn" id="play-again" onclick="modalControl(this)">
-                    Play again
-                </button>
-            </div>
-        </div>
-	</div>
+	
 	
     <section class="main-panel">
         <div class="title-area">
             <h1 class="bg-color-title head-text-color">tic tac toe</h1>
-            <button type="button" class="bg-color-button" id="start-btn" onclick="startGame()">start</button>
         </div>
-        <div id="user-instruction"></div>
+        <div class="menu-area">
+			<div class="btn-area">
+				<button type="button" onclick="window.location.href = 'game.html';" class="bg-color-button menu-btn">play</button>
+			</div>
+			<div class="btn-area">
+				<button type="button" id="tutorial-btn" class="bg-color-button menu-btn">tutorial</button>
+			</div>
+			<div class="btn-area">
+				<button type="button" class="bg-color-button menu-btn">sign</button>
+			</div>
+        </div>
     </section>
-    <section class="board-area">
-      <div class="board">
-        <div class="board-square" id="1" onclick="makeUserMark(this)">
-          <div class="mark marker-font">
-            <div class="space"></div>
-            <div class="x">X</div>
-            <!--<div class="o">O</div>-->
-            <!-- computer choice -->
-          </div>
+    <section class="tutorial">
+        <div class="tutorial-text">
+            <h2>Goal</h2>
+            <p>Be the first player to create a line of 3 <span>O</span>s or <span>X</span>s in a row, column or diagonal line.</p>
+            <h3>Winning Examples</h3>
+        </div>   
+        <div id="winning-examples">
+            <div class="board">
+                <div class="board-square">
+                    <div class="space example marker-font">X</div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space  example marker-font">X</div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font">X</div>
+                </div>
+            </div>
+            <div class="board">
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font">O</div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space  example marker-font">O</div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font">O</div>
+                </div>
+                <div class="board-square">
+                    <div class="space example marker-font"></div>
+                </div>
+            </div>
         </div>
-        <div class="board-square" id="2" onclick="makeUserMark(this)">
-          <div class="mark marker-font">
-            <div class="space"></div>
-            <div class="x">X</div>
-            <!--<div class="o">O</div>-->
-            <!-- computer choice -->
-          </div>
+        <div class="tutorial-text">
+            <h2>Rules</h2>
+            <ul id="rules">
+                <li>Players alternate their turns without exception.</li>
+                <li>Once a space has been taken it cannot be retaken.</li>
+                <li>If all nine squares are occupied and no winner is found then it shall be declared a draw.</li>
+            </ul>
+            <h3>Draw Example</h3>
         </div>
-        <div class="board-square" id="3" onclick="makeUserMark(this)">
-          <div class="mark marker-font">
-            <div class="space"></div>
-            <div class="x">X</div>
-            <!--<div class="o">O</div>-->
-            <!-- computer choice -->
-          </div>
+        <div class="board">
+            <div class="board-square">
+                <div class="space example marker-font">X</div>
+            </div>
+            <div class="board-square">
+                <div class="space example marker-font">O</div>
+            </div>
+            <div class="board-square">
+                <div class="space example marker-font">X</div>
+            </div>
+            <div class="board-square">
+                <div class="space example marker-font">X</div>
+            </div>
+            <div class="board-square">
+                <div class="space  example marker-font">O</div>
+            </div>
+            <div class="board-square">
+                <div class="space example marker-font">O</div>
+            </div>
+            <div class="board-square">
+                <div class="space example marker-font">O</div>
+            </div>
+            <div class="board-square">
+                <div class="space example marker-font">X</div>
+            </div>
+            <div class="board-square">
+                <div class="space example marker-font">X</div>
+            </div>
         </div>
-        <div class="board-square" id="4" onclick="makeUserMark(this)">
-          <div class="mark marker-font">
-            <div class="space"></div>
-            <div class="x">X</div>
-            <!--<div class="o">O</div>-->
-            <!-- computer choice -->
-          </div>
-        </div>
-        <div class="board-square" id="5" onclick="makeUserMark(this)">
-          <div class="mark marker-font">
-            <div class="space"></div>
-            <div class="x">X</div>
-            <!--<div class="o">O</div>-->
-            <!-- computer choice -->
-          </div>
-        </div>
-        <div class="board-square" id="6" onclick="makeUserMark(this)">
-          <div class="mark marker-font">
-            <div class="space"></div>
-            <div class="x">X</div>
-            <!--<div class="o">O</div>-->
-            <!-- computer choice -->
-          </div>
-        </div>
-        <div class="board-square" id="7" onclick="makeUserMark(this)">
-          <div class="mark marker-font">
-            <div class="space"></div>
-            <div class="x">X</div>
-            <!--<div class="o">O</div>-->
-            <!-- computer choice -->
-          </div>
-        </div>
-        <div class="board-square" id="8" onclick="makeUserMark(this)">
-          <div class="mark marker-font">
-            <div class="space"></div>
-            <div class="x">X</div>
-            <!--<div class="o">O</div>-->
-            <!-- computer choice -->
-          </div>
-        </div>
-        <div class="board-square" id="9" onclick="makeUserMark(this)">
-          <div class="mark marker-font">
-            <div class="space"></div>
-            <div class="x">X</div>
-            <!--<div class="o">O</div>-->
-            <!-- computer choice -->
-          </div>
-        </div>
-      </div>
     </section>
   </body>
 </html>

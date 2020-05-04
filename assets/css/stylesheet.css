@@ -21,10 +21,77 @@
 }
 /*************************************************  Colors   End  */
 
-/*************************************************  User panel  */
-.main-panel {
+/*************************************************  Main Panel   */
+.main-panel{
+    display: grid;
+    padding: 20px;
+    grid-template-rows: 2fr 3fr;
+}
+.main-panel .title-area{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    padding: 4px;
+    width: 100%;
+}
+.main-panel .menu-area {
+    display:grid;
+    grid-gap:10px;
+}
+
+@media screen and (min-width: 768px){
+    .main-panel{
+        grid-template-rows: 2fr 1fr;
+    }
+    
+    .main-panel .menu-area {
+        display:grid;
+        grid-template-columns:1fr 1fr 1fr;
+    }
+}
+
+/*************************************************  Main Panel   End  */
+
+/************************************************* Tutorial     */
+
+.tutorial{
+    display:none;
+}
+
+.tutorial-text{
+    padding: 20px;
+    padding-bottom: 5px;
+    font-family: "Niramit" , sans-serif;
+    background-color: #ebe18c
+}
+.tutorial-text h2 {
+    margin-bottom: 10px;
+}
+.tutorial-text h3 {
+    font-size: 24px;
+}
+#rules{
+    list-style: none;   
+    padding: 0;
+}
+#rules li {
+    margin-bottom: 10px;
+}
+
+/************************************************* Tutorial     End */
+
+/*************************************************  Game panel  */
+.game-panel {
   display: grid;
-  height: 30%;
+  padding: 20px;
+  grid-template-rows: 2fr 1fr 1fr;
+}
+
+.btn-area{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 h1 {
@@ -34,13 +101,13 @@ h1 {
   padding: 4px;
 }
 
-#start-btn {
+.menu-btn {
   font-family: "Tomorrow", sans-serif;
   text-transform: uppercase;
-  margin-bottom: 15px;
+  /*margin-bottom: 15px;*/
   padding: 4px;
   width: 150px;
-  height: 50px;
+  height: 40px;
   font-size: 24px;
 }
 
@@ -51,10 +118,9 @@ h1 {
 }
 
 #user-instruction {
-  height: fit-content;
-  margin-bottom: 15px;
   padding: 4px;
   text-align: center;
+  align-self: end;
   font-family: "Niramit", sans-serif;
   font-size: 1em;
 }
@@ -85,6 +151,7 @@ h1 {
   padding: 20px;
 }
 .board-square {
+  display: flex;  /* added in for tutorial board*/
   position: relative;
   height: 85px;
   background-color: #ebe18c;
@@ -96,7 +163,13 @@ h1 {
     height: 100%;
     width: 100%;
 }
-
+/*************************************************  Tutorial board only     */
+.example{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*************************************************  Tutorial board only  End  */
 .space{
     position: absolute;
     width: 100%;
