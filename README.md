@@ -1,39 +1,55 @@
-<img src="https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png" style="margin: 0;">
+Tic Tac Toe
 
-Welcome Domchap90,
+Description
+A simple 1 player game of tic tac toe, commonly referred to as "Naughts and crosses".
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project.
+Target demographic 
+children under 10 years old.
 
-## Gitpod Reminders
+User Interface Design
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+Emphasis on simple and easy to use. Bright colours used to draw children into the game.
 
-`python3 -m http.server`
+Features
 
-A blue button should appear to click: *Make Public*,
+Control Flow
 
-Another blue button should appear to click: *Open Browser*.
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
 
-A blue button should appear to click: *Make Public*,
+STRATEGY
 
-Another blue button should appear to click: *Open Browser*.
+It's an imperfect strategy played by the computer. Whereby initially picking
+its next move based upon available spaces that occur on the greatest number of 
+winning lines. Depicted by the array below:
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the backend lessons.
+3 2 3<br>
+2 4 2<br>
+3 2 3<br>
 
-## Updates Since The Instructional Video
+However this strategy alone isn't sufficient for a challenging game of tic tac 
+toe. Due to the fact that none of the decision making is related to what the 
+other player is doing. So the strategy that takes priority is to complete a line.
+This has been defined by scanning across all rows and columns and searching for 
+lines that occupy 2 of the _same_ marker with a space to be filled.Then by 
+filling this space irrespective of the markers on the line it will serve as an
+offensive or a defensive move to win OR to stop the other player winning.
 
-We continually tweak and adjust this template to help give you the best experience. Here are the updates since the original video was made:
+This strategy can be beaten because it starts in the middle space whilst 
+although having most winning line opportunities it also takes more attempts to 
+complete those lines when compared with starting in the corners. When spaces of
+equal line opportunity havent been marked the computer simply picks the first 
+one available in the iteration from top left corner through each row to the bottom
+right corner. This decision process isn't optimised.
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
+The optimal game strategy would consist of fewest attempts to create maximal line
+opportunities.
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+Allowing the user to win some of the time, encourages them to play the game. The user
+also has the upper hand by choosing first.
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+Testing
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+Deploy
 
---------
+References
 
-Happy coding!
