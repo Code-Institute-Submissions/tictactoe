@@ -43,11 +43,14 @@ function getMarker(marker){
     //ensures two options can't be selected simultaneously.
     $('.option-grid#marker').children().removeClass('selected');
     $(marker).addClass('selected');
+    localStorage.setItem('marker-chosen',userMark);
 }
 
 function getFirstPlayer(option){
     let fPlayer = $(option).children().html();
+    fPlayer = (fPlayer==='yes')? 'user':'computer';
     //ensures two options can't be selected simultaneously.
     $('.option-grid#firstPlayer').children().removeClass('selected');
     $(option).addClass('selected');
+    localStorage.setItem('first-player',fPlayer);
 }

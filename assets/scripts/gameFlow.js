@@ -4,7 +4,12 @@ const board = [
                 [4, 5, 6],
                 [7, 8, 9],
             ];
-
+$(document).ready(function(){
+    let firstPlayer = localStorage.getItem('first-player');
+    let markerChosen = localStorage.getItem('marker-chosen');
+    $('.first-player-selected').html(firstPlayer);
+    $('.marker-selected').html(markerChosen);
+});
 
 
 //Assume user goes first
@@ -73,12 +78,12 @@ function makeUserMark(currentElement) { // takes id from element which refers to
         } else {  
         $(currentElement).find(".space").html('X');
         $(".board").find(".mark").unbind('mouseenter mouseleave');  // turns off hover function for all spaces whilst comp moves.
-        //$(currentElement).find(".mark").unbind('mouseenter mouseleave');
         $(currentElement).find('.mark').css("transform", "rotateY(720deg)","transition","all 0.2s ease");
-        $("#user-instruction").html('Your move is '+elementId+'.');
+        $('#user-instruction').html("");
         updateBoard(elementId,'user',board);    
         }
     }
+
 }
 
 function makeCompMark(move, board) { 
@@ -110,24 +115,22 @@ function flowControl(boardState, player) {
             $("#gameover-msg").find(".modal-body").html("Sorry, you lose.");
             $("#gameover-msg").css("display","block");
         }
-  }
-  else if (hasSpacesRemainingTwoD(boardState)) {
-    //continue game --> change players.
-    var nextPlayer = player === "computer" ? "user" : "computer";
-    if (nextPlayer === "user") {
-      // notifies user to click on another board space. 
-      //This will invoke makeUserMark function and continue the gameFlow cycle.
-      $("#user-instruction").html("It's now your turn.");
-    } else {
-      $("#user-instruction").html("Computer's turn.");
-      setTimeout(function(){computerChose(nextPlayer, boardState);},2000);
     }
+    else if (hasSpacesRemainingTwoD(boardState)) {
+        //continue game --> change players.
+        var nextPlayer = player === "computer" ? "user" : "computer";
+        if (nextPlayer === "user") {
+        // notifies user to click on another board space. 
+        //This will invoke makeUserMark function and continue the gameFlow cycle.
+        } else {
+            computerChose(nextPlayer, boardState);
+        }
   } // draw
-  else {
-      console.log("It's a draw!");
-      $("#gameover-msg").find(".modal-body").html("It's a draw.");
-      $("#gameover-msg").css("display","block");
-  }
+    else {
+        console.log("It's a draw!");
+        $("#gameover-msg").find(".modal-body").html("It's a draw.");
+        $("#gameover-msg").css("display","block");
+    }
 }
 
 function displayBoard(boardArr) {
