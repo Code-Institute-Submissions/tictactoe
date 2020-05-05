@@ -1,24 +1,19 @@
-window.onload = function () {
-    ('#tutorial-btn').on('click',tutorialToggle());
-    ('#options-btn').on('click',optionToggle());
-}
 function tutorialToggle(){
-    return $('.tutorial').toggle();
+    $('.tutorial').toggle();
 }
 function optionToggle(){
-    return $('.options').toggle();
+    $('.options').toggle();
 }
 
 function selectButton(button){
     changeColor(button);
     if (button.id==='tutorial-btn') showTutorial();
-    else if (button.id==='options-btn') showOptions(button);
+    else if (button.id==='options-btn') showOptions();
 }
 
 function showTutorial() {
     // If options showing, hide
     if (!$('.options').is(":hidden")){
-        console.log('option visible is accessed.')
         optionToggle();
     }
     tutorialToggle();   
@@ -26,7 +21,6 @@ function showTutorial() {
 function showOptions() {
     // If tutorial showing, hide
     if (!$('.tutorial').is(":hidden")){
-         console.log('tutorial visible is accessed.')
         tutorialToggle();
     }
     optionToggle();    
@@ -40,4 +34,20 @@ function changeColor(btn){
         $('.menu-area').find('.menu-btn').removeClass('switch-on');
         $(btn).addClass('switch-on');
     }
+}
+
+function getMarker(marker){
+    //store option variable and send to gameFlow.js for following games until another option is selected.
+    let userMark = $(marker).children().html();
+    console.log('mark selected is '+userMark)
+    //ensures two options can't be selected simultaneously.
+    $('.option-grid#marker').children().removeClass('selected');
+    $(marker).addClass('selected');
+}
+
+function getFirstPlayer(option){
+    let fPlayer = $(option).children().html();
+    //ensures two options can't be selected simultaneously.
+    $('.option-grid#firstPlayer').children().removeClass('selected');
+    $(option).addClass('selected');
 }
