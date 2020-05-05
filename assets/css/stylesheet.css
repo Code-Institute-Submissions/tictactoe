@@ -39,6 +39,10 @@
     display:grid;
     grid-gap:10px;
 }
+.switch-on{
+    color: #d8a027;
+    background-color: #000;
+}
 
 @media screen and (min-width: 768px){
     .main-panel{
@@ -58,12 +62,15 @@
 .tutorial{
     display:none;
 }
-
+.text-container{
+    width: 100%;
+    display: flex;
+    background-color: #ebe18c;
+}
 .tutorial-text{
     padding: 20px;
     padding-bottom: 5px;
     font-family: "Niramit" , sans-serif;
-    background-color: #ebe18c
 }
 .tutorial-text h2 {
     margin-bottom: 10px;
@@ -78,8 +85,88 @@
 #rules li {
     margin-bottom: 10px;
 }
-
+@media screen and (min-width:992px){
+    .text-container{
+        justify-content: center;
+    }
+    .tutorial-text{
+        width: 52%;
+    }
+}
 /************************************************* Tutorial     End */
+
+/************************************************* Options     */
+
+.options{
+    display:none;
+}
+.option-grid-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.option-grid{
+    display: grid;
+    grid-template-columns: 85px 85px 85px;
+    padding: 20px;
+    
+}
+.options p{
+    padding: 20px;
+    padding-bottom: 5px;
+    font-family:"Niramit", sans-serif;
+}
+.option-grid .middle{
+    height: 85px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+}
+
+.board-square-option{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    color: #d8a027;
+    height: 85px;
+}
+.board-square-option:hover {
+    background-color: #ebe18c;
+    color: #000;
+}
+.selected{
+    background-color: #ebe18c;
+    color: #000;
+}
+.option-font{
+    font-family: "Niramit", sans-serif;
+    font-size: 32px;
+}
+@media screen and (min-width: 576px) {
+    .board-square-option{
+        height: 130px;
+    }
+    .option-grid{
+        grid-template-columns: 130px 130px 130px;  
+    }
+    .option-grid .middle{
+        height: 130px;
+    }
+}
+@media screen and (min-width: 992px) {
+    .board-square-option{
+        height: 180px;
+    }
+    .option-grid{
+        grid-template-columns: 180px 180px 180px;  
+    }
+    .option-grid .middle{
+        height: 180px;
+    }
+}
+/************************************************* Option     End */
 
 /*************************************************  Game panel  */
 .game-panel {
