@@ -1,17 +1,21 @@
-
+const firstPlayer = localStorage.getItem('first-player');
+const markerChosen = localStorage.getItem('marker-chosen');
 const board = [
                 [1, 2, 3],
                 [4, 5, 6],
                 [7, 8, 9],
             ];
 $(document).ready(function(){
-    let firstPlayer = localStorage.getItem('first-player');
-    let markerChosen = localStorage.getItem('marker-chosen');
-    $('.first-player-selected').html(firstPlayer);
-    $('.marker-selected').html(markerChosen);
 });
 
-
+function getMarkerOf(player){
+    let userMark = markerChosen;
+    // default value assigned to userMark if none selected in options menu.
+    userMark = (userMark)? userMark: 'X';
+    let compMark = (userMark==='X')? 'O':'X';
+    if (player==='user')return userMark;
+    else return compMark;
+}
 //Assume user goes first
 //objects: user + computer OR 2 instances of player. Stats object
 // user true, computer false. (boolean)
@@ -30,8 +34,9 @@ function modalControl(currentElement){
 }
 
 function startGame() {
+    let userMark = getMarkerOf('user');
     displayBoard(board);
-    console.log($('#start-btn').html()==='start')
+    $('.board .potential-mark').html(userMark);
     if ($('#start-btn').html()==='start'){
         for(id=1;id<=9;id++){  
             $('#'+id).addClass('active');   // allows spaces to be marked.
@@ -41,6 +46,8 @@ function startGame() {
                 $(this).css("transform", "rotateY(0deg)");
             });
         }
+        //let firstPlayer = $('.first-player-selected').html();
+        if (firstPlayer==='computer') computerChose(firstPlayer, board);
         $('#user-instruction').html('The game has started, you can now place your marker.');
         // change to reset button
         $('#start-btn').html('reset');
@@ -71,12 +78,14 @@ function resetBoard(){
 }
 
 function makeUserMark(currentElement) { // takes id from element which refers to board space.
+    let userMark = getMarkerOf('user');
     let elementId=currentElement.id;    //string 
-    if ( $(currentElement).hasClass('active') && $('#user-instruction').html() != "Computer's turn.") {
-        if ( $(currentElement).find(".space").html()==='X' || $(currentElement).find(".space").html()==='O'){
+    if ( $(currentElement).hasClass('active') && $('#user-instruction').html() != "Computer's turn.") {     // second condition may need adjusting -> no "Computer's turn." message anymore. If any element is hoverable
+        if ( !$(currentElement).hasClass('active')) {
             $("#user-instruction").html("Cannot move here, this space is already occupied!");
         } else {  
-        $(currentElement).find(".space").html('X');
+        $(currentElement).find(".space").html(userMark);
+        $(currentElement).removeClass('active');
         $(".board").find(".mark").unbind('mouseenter mouseleave');  // turns off hover function for all spaces whilst comp moves.
         $(currentElement).find('.mark').css("transform", "rotateY(720deg)","transition","all 0.2s ease");
         $('#user-instruction').html("");
@@ -87,8 +96,10 @@ function makeUserMark(currentElement) { // takes id from element which refers to
 }
 
 function makeCompMark(move, board) { 
+    let compMark = getMarkerOf('computer');
     // Make mark first
-    $("#space"+move).html('O');
+    $("#space"+move).html(compMark);
+    $("#"+move).removeClass('active');
     for(id=1;id<=9;id++){ 
         if ( $("#space"+id).html()=== '') {
         // After mark is made, hover turns back on for empty spaces.
@@ -106,9 +117,12 @@ function makeCompMark(move, board) {
 }
 
 function flowControl(boardState, player) {
+    let userMark = getMarkerOf('user');
     // determines winner message if winning state has been reached. 
     if ( winner(boardState) != "No winner"){
-        if ( winner(boardState)==="X is winner!" ){
+        console.log( ' winner result is '+winner(boardState)+' segment of winner is '+winner(boardState).substring(0,1)+'.' );
+        // if ( winner(boardState)==="X is winner!" )
+        if ( userMark===winner(boardState).substring(0,1) ){
             $("#gameover-msg").find(".modal-body").html("Congratulations, you win.");
             $("#gameover-msg").css("display","block");
         } else {
@@ -188,8 +202,8 @@ function updateBoard(move, player, board) {     // move is string
         coordinates = [2, 2];
         break;
     }
-    if (player === "user") board[coordinates[0]][coordinates[1]] = "X";
-    else board[coordinates[0]][coordinates[1]] = "O";
+    if (player === "user") board[coordinates[0]][coordinates[1]] = getMarkerOf('user');
+    else board[coordinates[0]][coordinates[1]] = getMarkerOf('computer');
     displayBoard(board);
     return flowControl(board, player);
 }
