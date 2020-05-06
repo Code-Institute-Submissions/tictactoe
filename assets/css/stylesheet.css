@@ -21,7 +21,11 @@
 }
 /*************************************************  Colors   End  */
 
-/*************************************************  Main Panel   */
+/*************************************************  Global        */
+
+
+
+/*************************************************  Main Panel    */
 .main-panel{
     display: grid;
     padding: 20px;
@@ -32,6 +36,7 @@
     justify-content: center;
     align-items: center;
     font-weight: 700;
+    margin: 40px 0;
     padding: 4px;
     width: 100%;
 }
@@ -78,6 +83,11 @@
 .tutorial-text h3 {
     font-size: 24px;
 }
+.winning-example{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 #rules{
     list-style: none;   
     padding: 0;
@@ -85,12 +95,22 @@
 #rules li {
     margin-bottom: 10px;
 }
-@media screen and (min-width:992px){
+
+@media screen and (min-width:576px){
     .text-container{
         justify-content: center;
     }
     .tutorial-text{
-        width: 52%;
+        width: 406px;
+    }
+} 
+
+@media screen and (min-width:992px){
+    .tutorial-text{
+        width: 560px;
+    }
+     p , li {
+        font-size: 20px;
     }
 }
 /************************************************* Tutorial     End */
@@ -165,6 +185,9 @@
     .option-grid .middle{
         height: 180px;
     }
+    .option-font{
+        font-size:  48px;
+    }
 }
 /************************************************* Option     End */
 
@@ -230,18 +253,18 @@ h1 {
     align-items: center;
 }
 .board {
-  display: grid;
-  width: 265px;
-  margin: auto auto;
-  grid-template-columns: 85px 85px 85px;
-  grid-gap: 5px;
-  padding: 20px;
+    display: grid;
+    width: 265px;
+    margin: auto auto;
+    grid-template-columns: 85px 85px 85px;
+    grid-gap: 5px;
+    padding: 20px 0;
 }
 .board-square {
-  display: flex;  /* added in for tutorial board*/
-  position: relative;
-  height: 85px;
-  background-color: #ebe18c;
+    display: flex;  /* added in for tutorial board*/
+    position: relative;
+    height: 85px;
+    background-color: #ebe18c;
 }
 .mark {
     position: absolute;
@@ -250,13 +273,7 @@ h1 {
     height: 100%;
     width: 100%;
 }
-/*************************************************  Tutorial board only     */
-.example{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-/*************************************************  Tutorial board only  End  */
+
 .space{
     position: absolute;
     width: 100%;
@@ -283,7 +300,7 @@ h1 {
 
 @media screen and (min-width: 576px){
     .board-area{
-        height: 700px;
+        height: 600px;
     }
     .board {
         width: 406px;
@@ -299,6 +316,10 @@ h1 {
 }
 
 @media screen and (min-width: 992px){
+    .board-area{
+        height: 700px;
+    }
+
     .board {
         width: 560px;
         grid-template-columns: 180px 180px 180px;
@@ -313,6 +334,15 @@ h1 {
 }
 
 /*************************************************  Board   End */
+
+/*************************************************  Tutorial board     */
+.example{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*************************************************  Tutorial board  End  */
 
 /*************************************************  Modal */
 
