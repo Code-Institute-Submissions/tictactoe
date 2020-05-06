@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Niramit:wght@300&family=Tomorrow&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/stylesheet.css" />
     <title>Tic Tac Toe</title>
@@ -22,7 +22,7 @@
 	
     <section class="main-panel">
         <div class="title-area">
-            <h1 class="bg-color-title head-text-color">tic tac toe</h1>
+            <h1 class="bg-color-title head-text-color font-weight-bold">tic tac toe</h1>
         </div>
         <div class="menu-area">
 			<div class="btn-area">
@@ -37,14 +37,14 @@
         </div>
     </section>
     <section class="tutorial">
-        <div class="text-container">
+        <div class="text-container container-fluid">
             <div class="tutorial-text">
                 <h2>Goal</h2>
                 <p>Be the first player to create a line of 3 <span>O</span>s or <span>X</span>s in a row, column or diagonal line.</p>
                 <h3>Winning Examples</h3>
             </div>   
         </div>
-        <div id="winning-examples">
+        <div class="winning-example">
             <div class="board">
                 <div class="board-square">
                     <div class="space example marker-font">X</div>
@@ -74,6 +74,8 @@
                     <div class="space example marker-font">X</div>
                 </div>
             </div>
+        </div>
+        <div class="winning-example">
             <div class="board">
                 <div class="board-square">
                     <div class="space example marker-font"></div>
@@ -104,7 +106,7 @@
                 </div>
             </div>
         </div>
-        <div class="text-container">
+        <div class="text-container container-fluid">
             <div class="tutorial-text">
                 <h2>Rules</h2>
                 <ul id="rules">
@@ -146,7 +148,7 @@
         </div>
     </section>
     <section class="options">
-        <div class="text-container">
+        <div class="text-container container-fluid">
             <p>Which marker do you want?</p>
         </div>
         <div class="option-grid-container">
@@ -162,7 +164,7 @@
                 </div>
             </div> 
         </div>
-        <div class="text-container">
+        <div class="text-container container-fluid">
             <p>Would you like to move first?</p>
         </div>
         <div class="option-grid-container">
