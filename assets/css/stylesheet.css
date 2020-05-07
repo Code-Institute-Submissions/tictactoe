@@ -388,13 +388,7 @@ h1 {
     font-size: 18px;
     padding: 2px 8px;
 }
-.close {
-    font-size: 24px;
-    color: #000;
-    font-family: "Tomorrow" , sans-serif;
-}
-.close:hover,
-.close:focus,
+
 #play-again:hover,
 #quit:hover {
   color: #dc3f1c;
