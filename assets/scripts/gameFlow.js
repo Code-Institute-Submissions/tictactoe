@@ -5,50 +5,41 @@ const board = [
                 [4, 5, 6],
                 [7, 8, 9],
             ];
-$(document).ready(function(){
-});
 
 function getMarkerOf(player){
     let userMark = markerChosen;
-    // default value assigned to userMark if none selected in options menu.
+// default value assigned to userMark if none selected in options menu.
     userMark = (userMark)? userMark: 'X';
     let compMark = (userMark==='X')? 'O':'X';
     if (player==='user')return userMark;
     else return compMark;
 }
-//Assume user goes first
-//objects: user + computer OR 2 instances of player. Stats object
-// user true, computer false. (boolean)
+
 function modalControl(currentElement){
-    if ($(currentElement).hasClass('close')){
-        console.log('close click registered.')
-     $("#gameover-msg").css("display","none");
-    
-    }
-    else if(currentElement.id==='play-again') {
+    if(currentElement.id==='play-again') {
         resetBoard();
         $("#gameover-msg").css("display","none");
         startGame();
     } 
-    
 }
 
 function startGame() {
     let userMark = getMarkerOf('user');
-    displayBoard(board);
     $('.board .potential-mark').html(userMark);
     if ($('#start-btn').html()==='start'){
-        for(id=1;id<=9;id++){  
-            $('#'+id).addClass('active');   // allows spaces to be marked.
-            $("#mark"+id).hover( function() { // allow every boardspace to be hovered upon to reveal potential chosen marker.
+        for(let id=1;id<=9;id++){ 
+            // allows spaces to be marked.
+            $('#'+id).addClass('active');   
+            $("#mark"+id).hover( function() { 
+// allow every boardspace to be hovered upon to reveal potential chosen marker.
                 $(this).css("transform", "rotateY(180deg)");
             }, function(){
                 $(this).css("transform", "rotateY(0deg)");
             });
         }
-        //let firstPlayer = $('.first-player-selected').html();
         if (firstPlayer==='computer') computerChose(firstPlayer, board);
-        $('#user-instruction').html('The game has started, you can now place your marker.');
+        $('#user-instruction').html('The game has started, you can now place your'
+        +' marker.');
         // change to reset button
         $('#start-btn').html('reset');
     } else {
@@ -56,43 +47,43 @@ function startGame() {
     } 
 }
 function resetBoard(){
-    console.log('resetBoard entered .')
-    // Make spaces empty & inactive. Remove Hover bindings.
+// Make spaces empty & inactive. Remove Hover bindings.
     $(".board div div div").empty();
-    for(id=1;id<=9;id++){
+    for(let id=1;id<=9;id++){
         $("#mark"+id).unbind('mouseenter mouseleave');
         $("#"+id).removeClass("active");
     }
-    displayBoard(board);
     let s= 0;
-    for (i=0; i<board.length; i++){
-        for(j=0; j<board[i].length;j++){
+    for (let i=0; i<board.length; i++){
+        for(let j=0; j<board[i].length;j++){
             s++;
             board[i][j]=s;
         }
     }
-    displayBoard(board);
-    
     $('#start-btn').html('start');
-    $('#user-instruction').html('After starting the game, you will be able to make your first move.');
+    $('#user-instruction').html('After starting the game, you will be able to make'
+    +' your first move.');
 }
 
 function makeUserMark(currentElement) { // takes id from element which refers to board space.
     let userMark = getMarkerOf('user');
     let elementId=currentElement.id;    //string 
-    if ( $(currentElement).hasClass('active') && $('#user-instruction').html() != "Computer's turn.") {     // second condition may need adjusting -> no "Computer's turn." message anymore. If any element is hoverable
-        if ( !$(currentElement).hasClass('active')) {
-            $("#user-instruction").html("Cannot move here, this space is already occupied!");
-        } else {  
+    if ( $(currentElement).hasClass('active') ) {   
+        // Make mark.
         $(currentElement).find(".space").html(userMark);
+        // Don't allow to be remarked.
         $(currentElement).removeClass('active');
-        $(".board").find(".mark").unbind('mouseenter mouseleave');  // turns off hover function for all spaces whilst comp moves.
-        $(currentElement).find('.mark').css("transform", "rotateY(720deg)","transition","all 0.2s ease");
+        // turns off hover function for all spaces whilst comp moves.
+        $(".board").find(".mark").unbind('mouseenter mouseleave');  
+        $(currentElement).find('.mark').css("transform", "rotateY(720deg)",
+        "transition","all 0.2s ease");
+        // Clears any prior instructions.
         $('#user-instruction').html("");
         updateBoard(elementId,'user',board);    
-        }
+    } else {
+        $("#user-instruction").html("Cannot move here, this space is already"
+        +" occupied!");
     }
-
 }
 
 function makeCompMark(move, board) { 
@@ -100,10 +91,10 @@ function makeCompMark(move, board) {
     // Make mark first
     $("#space"+move).html(compMark);
     $("#"+move).removeClass('active');
-    for(id=1;id<=9;id++){ 
+    for(let id=1;id<=9;id++){ 
         if ( $("#space"+id).html()=== '') {
-        // After mark is made, hover turns back on for empty spaces.
-        $("#mark"+id).hover( function() {     
+// After mark is made, hover turns back on for empty spaces.
+            $("#mark"+id).hover( function() {     
                     $(this).css("transform", "rotateY(180deg)");
                 }, function(){
                     $(this).css("transform", "rotateY(0deg)");
@@ -120,8 +111,6 @@ function flowControl(boardState, player) {
     let userMark = getMarkerOf('user');
     // determines winner message if winning state has been reached. 
     if ( winner(boardState) != "No winner"){
-        console.log( ' winner result is '+winner(boardState)+' segment of winner is '+winner(boardState).substring(0,1)+'.' );
-        // if ( winner(boardState)==="X is winner!" )
         if ( userMark===winner(boardState).substring(0,1) ){
             $("#gameover-msg").find(".modal-body").html("Congratulations, you win.");
             $("#gameover-msg").css("display","block");
@@ -131,47 +120,21 @@ function flowControl(boardState, player) {
         }
     }
     else if (hasSpacesRemainingTwoD(boardState)) {
-        //continue game --> change players.
+    //continue game --> change players.
         var nextPlayer = player === "computer" ? "user" : "computer";
-        if (nextPlayer === "user") {
-        // notifies user to click on another board space. 
-        //This will invoke makeUserMark function and continue the gameFlow cycle.
-        } else {
+    // No option for user, since makeUserMark is invoked by user clicking board-space.
+        if (nextPlayer === "computer"){
             computerChose(nextPlayer, boardState);
         }
-  } // draw
+    } // draw
     else {
-        console.log("It's a draw!");
         $("#gameover-msg").find(".modal-body").html("It's a draw.");
         $("#gameover-msg").css("display","block");
     }
 }
 
-function displayBoard(boardArr) {
-  console.log(
-    boardArr[0][0] +
-      " " +
-      boardArr[0][1] +
-      " " +
-      boardArr[0][2] +
-      "\n" +
-      boardArr[1][0] +
-      " " +
-      boardArr[1][1] +
-      " " +
-      boardArr[1][2] +
-      "\n" +
-      boardArr[2][0] +
-      " " +
-      boardArr[2][1] +
-      " " +
-      boardArr[2][2]
-  );
-  return boardArr;
-}
-
 function updateBoard(move, player, board) {     // move is string
-    // coordinates of where the marker goes to be decided if 'O' or 'X'.
+// coordinates of where the marker goes to be decided if 'O' or 'X'.
     var coordinates = [];
     switch (move) {
         case "1":
@@ -204,7 +167,6 @@ function updateBoard(move, player, board) {     // move is string
     }
     if (player === "user") board[coordinates[0]][coordinates[1]] = getMarkerOf('user');
     else board[coordinates[0]][coordinates[1]] = getMarkerOf('computer');
-    displayBoard(board);
     return flowControl(board, player);
 }
 
@@ -232,8 +194,8 @@ function containsNumberOf(element, array, number) {
 
 function copyBoard(boardState) {
   let copyBoardState = [[]];
-  for (i = 0; i < boardState.length; i++) {
-    for (j = 0; j < boardState[i].length; j++) {
+  for (let i = 0; i < boardState.length; i++) {
+    for (let j = 0; j < boardState[i].length; j++) {
       copyBoardState[i] = boardState[i].slice();
     }
   }
@@ -241,42 +203,59 @@ function copyBoard(boardState) {
 }
 
 function completeLine(board) {
-    // missing coordinates of marker required to complete line (defensively or offensively)
+    let compMark = getMarkerOf('computer');
+// missing coordinates of marker required to complete line (defensively or 
+// offensively)
     var coordLineGap = []; 
-    //Scan each row and column for two of same character on a line. MUST include space as well!
-    for (i = 0; i < board.length; i++) {
+// Scan each row and column for two of same character on a line. MUST 
+// include space as well!
+    for (let i = 0; i < board.length; i++) {
         if (
         containsNumberOf("O", board[i], 2) &&
         hasSpacesRemainingOneD(board[i]) > -1
         ) {
-        coordLineGap[0] = i;
-        coordLineGap[1] = hasSpacesRemainingOneD(board[i]);
-        return coordToMove(coordLineGap); //winning line --> assuming 'O' is computer marker.
+            coordLineGap[0] = i;
+            coordLineGap[1] = hasSpacesRemainingOneD(board[i]);
+            
+    // return winning line for computer marker when 'O'.
+            if (getMarkerOf('computer')==='O'){
+                return coordToMove(coordLineGap); 
+            }
         } else if (
         containsNumberOf("X", board[i], 2) &&
         hasSpacesRemainingOneD(board[i]) > -1
         ) {
-        coordLineGap[0] = i;
-        coordLineGap[1] = hasSpacesRemainingOneD(board[i]);
+            coordLineGap[0] = i;
+            coordLineGap[1] = hasSpacesRemainingOneD(board[i]);
+            
+    // return winning line for computer marker when 'X'.
+            if (getMarkerOf('computer')==='X') {
+                return coordToMove(coordLineGap);
+            }
         }
     }
+    // Transpose board to scan columns more easily.
+    board = board[0].map((row, i) => board.map((row) => row[i])); 
 
-    board = board[0].map((row, i) => board.map((row) => row[i])); //        Transpose board to scan columns more easily.
-
-    for (j = 0; j < board.length; j++) {
+    for (let j = 0; j < board.length; j++) {
         if (
             containsNumberOf("O", board[j], 2) &&
             hasSpacesRemainingOneD(board[j]) > -1
         ) {
             coordLineGap[0] = hasSpacesRemainingOneD(board[j]);
             coordLineGap[1] = j;
-            return coordToMove(coordLineGap); // winning line
+            
+            if (getMarkerOf('computer')==='O') // if winning line
+                return coordToMove(coordLineGap); 
         } else if (
             containsNumberOf("X", board[j], 2) &&
             hasSpacesRemainingOneD(board[j]) > -1
         ) {
             coordLineGap[0] = hasSpacesRemainingOneD(board[j]);
             coordLineGap[1] = j;
+    
+            if (getMarkerOf('computer')==='X') // if winning line
+                return coordToMove(coordLineGap);
         }
     }
     //  Undo earlier board transposition.
@@ -288,7 +267,7 @@ function completeLine(board) {
     let spaceCounter = 0;
     let m = 0;
     let n = 0;
-    for (k = 0; k < board.length; k++) {
+    for (let k = 0; k < board.length; k++) {
         if (board[k][k] === "O") oCounter++;
         if (board[k][k] === "X") xCounter++;
         if (typeof board[k][k] === "number") {
@@ -306,7 +285,7 @@ function completeLine(board) {
     oCounter = 0;
     spaceCounter = 0;
 
-    for (i = 0; i < board.length; i++) {
+    for (let i = 0; i < board.length; i++) {
         let j = 2 - i;
         if (board[i][j] === "O") oCounter++;
         if (board[i][j] === "X") xCounter++;
@@ -335,11 +314,11 @@ function maxMove(board) {
     [2, 4, 2],
     [3, 2, 3],
   ];
-  var max = 0;
-  var move = 0;
-  var maxMove = 0;
-  for (i = 0; i < board.length; i++) {
-    for (j = 0; j < board[i].length; j++) {
+  let max = 0;
+  let move = 0;
+  let maxMove = 0;
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[i].length; j++) {
       move++;
       if (board[i][j] != "X" && board[i][j] != "O") {
         if (strategyArray[i][j] > max) {
@@ -355,7 +334,7 @@ function maxMove(board) {
 
 function hasSpacesRemainingTwoD(board) {
   for (let i = 0; i < board.length; i++) {
-    for (j = 0; j < board[i].length; j++) {
+    for (let j = 0; j < board[i].length; j++) {
       if (board[i][j] != "X" && board[i][j] != "O") {
         return true;
       }
@@ -374,8 +353,8 @@ function hasSpacesRemainingOneD(array) {
 function moveToCoord(move) {
     let coords = [];
     let mv=0;
-    for (i = 0; i < 3; i++) {
-        for (j = 0; j < 3; j++) {
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
         mv++;
         if (mv === move) coords[0] === i && coords[1] === j;
     }
@@ -387,8 +366,8 @@ function moveToCoord(move) {
 function coordToMove(coords) {
   // takes coordinates in [i,j] form and converts them to string [1-9] move on 3X3 board.
   let move = 0;
-  for (i = 0; i < 3; i++) {
-    for (j = 0; j < 3; j++) {
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
       move++;
       if (coords[0] === i && coords[1] === j) return move.toString();
     }
@@ -397,67 +376,65 @@ function coordToMove(coords) {
 }
 
 function winner(boardState) {
-  i = 0;
-  xCount = 0;
-  oCount = 0;
-  result = "";
-  xRowCoordinates = [];
-  xColCoordinates = [];
-  oRowCoordinates = [];
-  oColCoordinates = [];
-  for (i = 0; i < boardState.length; i++) {
-    // row
-    for (j = 0; j < boardState[i].length; j++) {
-      // col
-      if (boardState[i][j] === "X") {
-        xCount += 1;
-        xRowCoordinates.push(i);
-        xColCoordinates.push(j);
-      } else if (boardState[i][j] === "O") {
-        oCount += 1;
-        oRowCoordinates.push(i);
-        oColCoordinates.push(j);
-      }
+    //let i = 0;
+    let xCount = 0;
+    let oCount = 0;
+    let result = "";
+    let xRowCoordinates = [];
+    let xColCoordinates = [];
+    let oRowCoordinates = [];
+    let oColCoordinates = [];
+    for (let i = 0; i < boardState.length; i++) {   // row
+        for (let j = 0; j < boardState[i].length; j++) {    // col
+            if (boardState[i][j] === "X") {
+                xCount += 1;
+                xRowCoordinates.push(i);
+                xColCoordinates.push(j);
+            } else if (boardState[i][j] === "O") {
+                oCount += 1;
+                oRowCoordinates.push(i);
+                oColCoordinates.push(j);
+            }
+        }
     }
-  }
 
-  if (
-    containsNumberOf(0, xRowCoordinates, 3) ||
-    containsNumberOf(1, xRowCoordinates, 3) ||
-    containsNumberOf(2, xRowCoordinates, 3) ||
-    containsNumberOf(0, xColCoordinates, 3) ||
-    containsNumberOf(1, xColCoordinates, 3) ||
-    containsNumberOf(2, xColCoordinates, 3) ||
-    containsDiagonalThree(xRowCoordinates, xColCoordinates)
-  ) {
-    result = "X is winner!";
-  } else if (
-    containsNumberOf(0, oRowCoordinates, 3) ||
-    containsNumberOf(1, oRowCoordinates, 3) ||
-    containsNumberOf(2, oRowCoordinates, 3) ||
-    containsNumberOf(0, oColCoordinates, 3) ||
-    containsNumberOf(1, oColCoordinates, 3) ||
-    containsNumberOf(2, oColCoordinates, 3) ||
-    containsDiagonalThree(oRowCoordinates, oColCoordinates)
-  ) {
-    result = "O is winner!";
-  } else result = "No winner";
+    if (
+        containsNumberOf(0, xRowCoordinates, 3) ||
+        containsNumberOf(1, xRowCoordinates, 3) ||
+        containsNumberOf(2, xRowCoordinates, 3) ||
+        containsNumberOf(0, xColCoordinates, 3) ||
+        containsNumberOf(1, xColCoordinates, 3) ||
+        containsNumberOf(2, xColCoordinates, 3) ||
+        containsDiagonalThree(xRowCoordinates, xColCoordinates)
+    ) {
+        result = "X is winner!";
+    } else if (
+        containsNumberOf(0, oRowCoordinates, 3) ||
+        containsNumberOf(1, oRowCoordinates, 3) ||
+        containsNumberOf(2, oRowCoordinates, 3) ||
+        containsNumberOf(0, oColCoordinates, 3) ||
+        containsNumberOf(1, oColCoordinates, 3) ||
+        containsNumberOf(2, oColCoordinates, 3) ||
+        containsDiagonalThree(oRowCoordinates, oColCoordinates)
+    ) {
+        result = "O is winner!";
+    } else result = "No winner";
 
-  return result;
+    return result;
 }
 
 function containsDiagonalThree(array1, array2) {
-  // top left to bottom right.
-  counter = 0;
-  for (i = 0; i < array1.length; i++) {
-    if (array1[i] === array2[i]) counter++;
-  }
-  if (counter > 2) return true;
-  // top right to bottom left.
-  counter = 0;
-  for (i = 0; i < array1.length; i++) {
-    if (array1[i] + array2[i] === 2) counter++;
-  }
-  if (counter > 2) return true;
-  return false;
+    // top left to bottom right.
+    let counter = 0;
+    for (let i = 0; i < array1.length; i++) {
+        if (array1[i] === array2[i]) counter++;
+    }
+    if (counter > 2) return true;
+    // top right to bottom left.
+    counter = 0;
+    for (let i = 0; i < array1.length; i++) {
+        if (array1[i] + array2[i] === 2) counter++;
+    }
+    if (counter > 2) return true;
+    return false;
 }
