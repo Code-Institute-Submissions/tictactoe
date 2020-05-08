@@ -72,15 +72,15 @@
     display: flex;
     background-color: #ebe18c;
 }
-.tutorial-text{
+.menu-text{
     padding: 20px;
     padding-bottom: 5px;
     font-family: "Niramit" , sans-serif;
 }
-.tutorial-text h2 {
+.menu-text h2 {
     margin-bottom: 10px;
 }
-.tutorial-text h3 {
+.menu-text h3 {
     font-size: 24px;
 }
 .winning-example{
@@ -100,13 +100,13 @@
     .text-container{
         justify-content: center;
     }
-    .tutorial-text{
+    .menu-text{
         width: 406px;
     }
 } 
 
 @media screen and (min-width:992px){
-    .tutorial-text{
+    .menu-text{
         width: 560px;
     }
      p , li {
@@ -131,11 +131,7 @@
     padding: 20px;
     
 }
-.options p{
-    padding: 20px;
-    padding-bottom: 5px;
-    font-family:"Niramit", sans-serif;
-}
+
 .option-grid .middle{
     height: 85px;
     display: flex;
