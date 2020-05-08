@@ -14,9 +14,9 @@ A simple 1 player game of tic tac toe, commonly referred to as "Naughts and cros
 
 ## User Interface Design
 
-Emphasis on simple and easy to use. Bright colours used to draw children into the game.
+The emphasis is placed on simple and easy to use in this project. Whilst instructions & rules will be given in the tutorial along with small prompts during gameplay, the idea is that the design is so simple that these instructions aren't really necessary. Vivid colours and fonts following a retro theme are used to draw children into the game. 
 
-## Essential Features
+### Essential Features
 
 <ul>
     <li>
@@ -34,7 +34,7 @@ Emphasis on simple and easy to use. Bright colours used to draw children into th
     </li>
 </ul>
 
-## Bonus Features
+### Bonus Features
 
 <ul>
     <li>    
@@ -48,7 +48,7 @@ Emphasis on simple and easy to use. Bright colours used to draw children into th
     </li>
 </ul>
 
-## Features that won't be implemented
+### Features that won't be implemented
 
 <ul>
     <li>
@@ -64,15 +64,15 @@ Emphasis on simple and easy to use. Bright colours used to draw children into th
 
 ## Wireframes
 
-### Index page
+### Game page
 
 <img src="wireframes/game.png" alt="markups of game page">
 
-### Results page:
+### Tutorial page:
 
 <img src="wireframes/main_tutorial.png" alt="markup of tutorial">
 
-### Training page:
+### Options page:
 
 <img src="wireframes/main_settings.png" alt="markups of options">
 
@@ -292,5 +292,34 @@ Or simply visit my GitHub Pages on https://domchap90.github.io/tictactoe/.
 
 ## Technologies
 
+The range of different technologies used in this game application is very narrow, because its heavily showing off my javascript coding logic. 
+<ul>
+<li>
+HTML provides the basic content.
+</li>
+<li>
+CSS provides the styling rules.
+</li>
+<li>
+Bootstrap4 is used only in the "index.html" page to create the fluid container effect.
+</li>
+<li>
+Jquery is added to take advantage of the simplified interactions with the DOM.
+</li>
+<li>
+GoogleFonts is linked in to allow the use of "Niramit" & "Tomorrow" fonts.
+</li>
+<li>
+Balsamiq was used to draw the wireframes.
+</li>
+</ul>
+
 ## References
 
+To create the rotating boardspace effect, the following link was used :
+https://www.w3schools.com/howto/howto_css_flip_card.asp
+
+## Acknowledgements
+
+I would like to thank my nephew Daniel for helping me test the game. Also to my mentor Brian for his
+continued support and dropping his major pearls of wisdom. 
