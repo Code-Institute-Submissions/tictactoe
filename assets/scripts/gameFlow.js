@@ -40,6 +40,8 @@ function startGame() {
         if (firstPlayer==='computer') computerChose(firstPlayer, board);
         $('#user-instruction').html('The game has started, you can now place your'
         +' marker.');
+// Determines user instruction in case space is occupied or game hasn't started.
+        startGame.called = true;
         // change to reset button
         $('#start-btn').html('reset');
     } else {
@@ -60,6 +62,7 @@ function resetBoard(){
             board[i][j]=s;
         }
     }
+    startGame.called = false;
     $('#start-btn').html('start');
     $('#user-instruction').html('After starting the game, you will be able to make'
     +' your first move.');
@@ -80,9 +83,11 @@ function makeUserMark(currentElement) { // takes id from element which refers to
         // Clears any prior instructions.
         $('#user-instruction').html("");
         updateBoard(elementId,'user',board);    
-    } else {
-        $("#user-instruction").html("Cannot move here, this space is already"
+    } else if (startGame.called) {
+         $("#user-instruction").html("Cannot move here, this space is already"
         +" occupied!");
+    } else {
+       $("#user-instruction").html("Game hasn't started yet.");
     }
 }
 
