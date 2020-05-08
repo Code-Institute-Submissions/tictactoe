@@ -37,9 +37,9 @@ function changeColor(btn){
 }
 
 function getMarker(marker){
-    //store option variable and send to gameFlow.js for following games until another option is selected.
+    //store option variable and send to gameFlow.js for following games until 
+    //another option is selected.
     let userMark = $(marker).children().html();
-    console.log('mark selected is '+userMark)
     //ensures two options can't be selected simultaneously.
     $('.option-grid#marker').children().removeClass('selected');
     $(marker).addClass('selected');
