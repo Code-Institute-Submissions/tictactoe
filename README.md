@@ -14,6 +14,8 @@ A simple 1 player game of tic tac toe, commonly referred to as "Naughts and cros
 
 ## User Interface Design
 
+Emphasis on simple and easy to use. Bright colours used to draw children into the game.
+
 ## Essential Features
 
 <ul>
@@ -60,11 +62,19 @@ A simple 1 player game of tic tac toe, commonly referred to as "Naughts and cros
     </li>
 </ul>
 
-### Wireframes
+## Wireframes
 
-Emphasis on simple and easy to use. Bright colours used to draw children into the game.
+### Index page
 
-## Control Flow
+<img src="wireframes/game.png" alt="markups of game page">
+
+### Results page:
+
+<img src="wireframes/main_tutorial.png" alt="markup of tutorial">
+
+### Training page:
+
+<img src="wireframes/main_settings.png" alt="markups of options">
 
 
 
